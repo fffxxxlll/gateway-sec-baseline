@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.utils.utils.jwt;
+package com.group4.secbaselinebackend.utils.jwt;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

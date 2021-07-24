@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.utils.utils;
+package com.group4.secbaselinebackend.utils;
 
 import org.springframework.stereotype.Component;
 

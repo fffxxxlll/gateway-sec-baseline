@@ -22,4 +22,5 @@ public class Admin {
     @TableField(value = "user_name")
     private String userName;
     private String pwd;
+    private String salt;
 }

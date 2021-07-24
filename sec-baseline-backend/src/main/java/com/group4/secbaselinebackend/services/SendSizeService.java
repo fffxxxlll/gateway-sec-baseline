@@ -7,18 +7,19 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author feng xl
- * @date 2021/7/17 0017 19:42
- */
+
 @Service
 public class SendSizeService {
 
     @Autowired
     SendSizeMapper sendSizeMapper;
 
-    public void selectAll() {
-        List<AvgSendSize> avgSendSizes = sendSizeMapper.selectList(null);
-        avgSendSizes.forEach(System.out::println);
+//    public void selectAll() {
+//        List<AvgSendSize> avgSendSizes = sendSizeMapper.selectList(null);
+//        avgSendSizes.forEach(System.out::println);
+//    }
+
+    public AvgSendSize selectOne(Integer id){
+        return sendSizeMapper.selectById(id);
     }
 }

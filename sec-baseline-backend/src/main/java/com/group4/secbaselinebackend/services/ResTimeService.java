@@ -7,18 +7,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * @author feng xl
- * @date 2021/7/17 0017 19:33
- */
+
 @Service
 public class ResTimeService {
 
     @Autowired
     private ResTimeMapper resTimeMapper;
 
-    public void selectAll() {
-        List<AvgResponseTime> avgResponseTimes = resTimeMapper.selectList(null);
-        avgResponseTimes.forEach(System.out::println);
+
+
+    public AvgResponseTime selectOne(Integer id){
+        return resTimeMapper.selectById(id);
     }
 }

@@ -1,0 +1,173 @@
+*{
+    outline: none;
+  /* 让输入框被选中后没有默认框框 */
+  user-select: none;
+  /* 用户不能选中文本，整体性更强 */
+}
+.clearfix::after{
+    content: "";
+    display: block;
+    clear: both;
+}
+body{
+    /* background-color: #b3e2fc; */
+    background:url("../img/5.jpg") no-repeat;
+    background-size: 100%;
+    margin: 0;
+    padding: 0;
+}
+.login{
+    width: 84%;
+    height: 550px;
+    margin: 0 auto;
+    margin-top: 90px;
+    border-radius: 30px;
+    box-sizing: border-box;
+}
+.login .left{
+    float: left;
+    width: 50%;
+    height: inherit;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+    box-sizing: border-box;
+    position: relative;
+}
+.login .right{
+    float: right;
+    width: 50%; 
+    height: inherit;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+    box-sizing: border-box;
+    position: relative;
+}
+.login .left .form{
+    width: 350px;
+    height: 350px;
+   /* 一种水平+垂直的居中定位方式 */
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   text-align: center;
+    border-radius: 60px;
+    background: rgba(42, 94, 126, .4);
+    box-shadow:  50px 50px 68px #1e4359,
+                 -50px -50px 68px #3679a3;
+    box-sizing: border-box;
+}
+.login .left .form .title{
+    font-weight: 400;
+    font-size: 40px;
+    color: white;
+    margin: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, .2);
+    opacity: 0.9;
+}
+.login .left .form .form-item{
+    height: 50px;
+    margin-bottom: 32px;
+}
+.login .left .form .form-item input,button{
+    border: none;
+    width: 85%;
+    padding:10px;
+    font-size: 25px;
+    border-radius: 16px;
+    backdrop-filter: blur(3px);
+    background-color: transparent;
+    border-left: 2px solid rgba(255, 255, 255, .3);
+    border-top: 2px solid rgba(255, 255, 255, .3);
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, .2);
+    color: white;
+}
+.login .left .form .form-item input::placeholder{
+    color: white;
+    opacity: 0.8;
+}
+.login .left .form .form-item input:focus{
+    border: none;
+    background-color: rgba(255, 255, 255, .1);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, .2);
+    border-right: 2px solid rgba(255, 255, 255, .3);
+    border-bottom: 2px solid rgba(255, 255, 255, .3);
+    box-shadow:inset 2px 2px 2px rgba(0, 0, 0, .2);
+}
+.login .left .form .form-item .btn{
+    font-weight: bold;
+    cursor: pointer;
+}
+.login .left .form .form-item input:hover{
+    color: black;
+}
+.login .right .img{
+    /* 水平垂直居中 */
+    position: absolute;
+    width: 100px;
+    height: 50px;
+    display: flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+	/* 视距 让元素看起来更有3D效果  */
+	perspective: 900px;
+	/* 鼠标放到元素上变成小手 */
+	cursor: pointer;
+	/* 让子元素保留其3D位置 */
+	transform-style: preserve-3d;
+	/* 动画 名称 时长 linear 是匀速 播放 infinite 是无限次播放 */
+	animation: rotate 20s linear infinite;
+} 
+.login .right section:hover {
+	/* 鼠标放到元素上停止动画 */
+	animation-play-state: paused;
+}
+.login .right section div {
+	/* 绝对定位 */
+	position: absolute;
+	left: 0;
+	top: 0;
+	/* 设置元素的倒影效果 below 是倒影效果在元素下方 15px 是元素和倒影的距离 后面的属性和背景渐变色是一个属性 设置了一个从下到上由背景透明色过渡到设置了不透明度的白色 */
+	-webkit-box-reflect: below 15px -webkit-linear-gradient(transparent 10%, rgba(255, 255, 255, 0.3));
+}
+.login .right section div:nth-child(1) {
+	transform: translateZ(200px);
+    background-color: #c14c39;
+    opacity: 0.8;
+    
+}
+.login .right section div:nth-child(2) {
+	transform: rotateY(90deg) translateZ(200px);
+    background-color: #6e9c72;
+    opacity: 0.8;
+}
+.login .right section div:nth-child(3) {
+	transform: rotateY(180deg) translateZ(200px);
+    background-color: #5e5f7a;
+    opacity: 0.8;
+}
+.login .right section div:nth-child(4) {
+	transform: rotateY(270deg) translateZ(200px);
+    background-color: #f5eb98;
+    opacity: 0.8;
+    
+}
+/* .login .right section div:nth-child(5) {
+	transform: rotateY(240deg) translateZ(250px);
+    background-color: #50a3bc;
+}
+section div:nth-child(6) {
+	transform: rotateY(300deg) translateZ(300px);
+	background-color: #f9a99a;
+} */
+/* 先定义旋转动画 */
+@keyframes rotate {
+	0% {
+		transform: rotateY(0);
+	}
+	100% {
+		transform: rotateY(360deg);
+	}
+}

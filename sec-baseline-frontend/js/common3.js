@@ -69,7 +69,7 @@ setTimeout(() => {
         },
         tooltip: {},
         legend: {
-            data:['时延']
+            data:['流量']
         },
         grid:{
             containLabel:true
@@ -81,7 +81,7 @@ setTimeout(() => {
 
         yAxis: {},
         series: [{
-            name: '时延',
+            name: '流量',
             type: 'line',
             //结合
             data: nums

@@ -12,7 +12,7 @@ mybatis-plus:
 
 token:
   expired_in:
-    300
+    30
   issuer:
     group4
   key:

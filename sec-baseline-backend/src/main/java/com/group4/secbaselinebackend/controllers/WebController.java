@@ -49,11 +49,11 @@ public class WebController {
         int temp = Integer.parseInt(id);
         return reqTimeService.selectOne(temp);
     }
-    @CrossOrigin
-    @RequestMapping("/reqview")
-    public String html1(){
-        return "reqview";
-    }
+//    @CrossOrigin
+//    @RequestMapping("/reqview")
+//    public String html1(){
+//        return "reqview";
+//    }
 
 //    处理平均响应时间表
     @CrossOrigin
@@ -74,11 +74,11 @@ public class WebController {
         int temp = Integer.parseInt(id);
         return resTimeService.selectOne(temp);
     }
-    @CrossOrigin
-    @RequestMapping("/resview")
-    public String html2(){
-        return "resview";
-    }
+//    @CrossOrigin
+//    @RequestMapping("/resview")
+//    public String html2(){
+//        return "resview";
+//    }
 
 
     //    处理平均发送数据量表
@@ -100,9 +100,9 @@ public class WebController {
         int temp = Integer.parseInt(id);
         return sendSizeService.selectOne(temp);
     }
-    @CrossOrigin
-    @RequestMapping("/senview")
-    public String html3(){
-        return "senview";
-    }
+//    @CrossOrigin
+//    @RequestMapping("/senview")
+//    public String html3(){
+//        return "senview";
+//    }
 }

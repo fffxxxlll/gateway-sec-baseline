@@ -63,7 +63,7 @@ public class JwtHelper {
                     .setSigningKey(new BASE64Encoder().encode(identityContext.getAuthKey().getBytes()))
                     .parseClaimsJws(jsonWebToken).getBody();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return claims;
     }
@@ -79,7 +79,7 @@ public class JwtHelper {
                     .setSigningKey(new BASE64Encoder().encode(key.getBytes()))
                     .parseClaimsJws(jsonWebToken).getBody();
         } catch (Exception e) {
-            e.printStackTrace();
+//            e.printStackTrace();
             return null;
         }
         Map<String, Object> map = new HashMap<>();

@@ -1,6 +1,10 @@
 function loginHome(){
     var name = $("#username").val();
     var pwd = $("#pwd").val();
+    var json = {
+        "userName" : name,
+        "pwd" : pwd
+    };
     if(name==""){
         document.getElementById("tip").innerHTML="用户名不能为空哟";
         return false;
@@ -10,24 +14,66 @@ function loginHome(){
         return false;
     }
     else{
-        $.ajax({
-            type:"post",  //请求类型
-            url:"http://10.17.100.131:8080/login",//请求地址
-            dataType:"json",//预期返回的参数类型
-            async:true, //异步
-            data:{username:name,pwd:pwd}, //传入后端Controller的参数
-            success:function(data){
-                var msg = data.msg;//提取出来的密码
-                if(msg==="success"){
-                    document.getElementById("tip").innerHTML="账号或密码输入错误";
-                }else{
-                    window.location.href="http://127.0.0.1:5500/sec-baseline-frontend/common.html";
-                }
-            }
-
-
-
-
-        });
+        login(json);
     }
+}
+
+
+
+function login(json) {
+    $.ajax({url:"http://localhost:8080/login",
+        type: 'post',
+        contentType: 'application/json',
+        data:JSON.stringify(json)
+        ,success:function(data){
+            console.log(JSON.stringify(data));
+            if(data.msg != null) {
+                alert(data.msg)
+            } else {
+                document.cookie = "token=" + data.token;
+                $(location).attr('href', 'common1.html');
+            }
+        },
+        error:function (data) {
+            alert(data);
+        }
+
+    });
+}
+
+function loginCheck (token) {
+    $.ajax({
+        url:"http://localhost:8080/success",
+        type: 'post',
+        beforeSend: function(request) {
+            request.setRequestHeader("Jwt-Token", token);
+        },
+        success:function(data){
+            if(data.msg !== "success"){
+
+                alert(data.msg);
+                $(location).attr('href', 'login.html');
+            } else {
+                $("html").show();
+            }
+        },
+        error:function (data) {
+            alert(data);
+        }
+    })
+}
+
+function getToken () {
+    var token = getCookie("token");
+    if(token == undefined)
+        return null;
+    else
+        return token.split(";")[0]
+}
+
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
 }

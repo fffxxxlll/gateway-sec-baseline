@@ -16,7 +16,7 @@ setTimeout(() => {
     //AJAX接收数据主体
     $.ajax({
         type:"GET",
-        url:"http://10.17.70.52:8080/initreq",
+        url:"http://localhost:8080/initreq",
         data:{},
         dataType:"json",
         async:true,
@@ -65,19 +65,16 @@ setTimeout(() => {
     function addData(shift) {
         $.ajax({
             type:"GET",
-            url:"http://10.17.70.52:8080/reqgetinfo",
+            url:"http://localhost:8080/reqgetinfo",
             data:{id:id.toString()},
             dataType:"json",
             async:true,
             success:function (json) {
                 var newSQLTime = json.ts;
                 var newTime = new Date(newSQLTime);
-
-
                 productName.push(formateDate(newTime));
                 nums.push(json.avgReqTime);
                 id++;
-
             },
             error :function(errorMsg) {
                 alert("获取后台数据失败！");

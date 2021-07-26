@@ -9,3 +9,11 @@ spring:
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+token:
+  expired_in:
+    30
+  issuer:
+    group4
+  key:
+    nCURB0ILXy6N00s/3OgUt28OhvnTYJbdhp6MINxl

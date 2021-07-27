@@ -1,9 +1,9 @@
 // setTimeout(() => {
 //     var chartDom = document.getElementById('main');
 //         var myChart = echarts.init(chartDom);
-//         var option;
+//         var option4;
 //
-//     option = {
+//     option4 = {
 //         title: {
 //             text: '堆叠区域图'
 //         },
@@ -100,15 +100,15 @@
 //         ]
 //     };
 //
-//     option && myChart.setOption(option);
+//     option4 && myChart.setOption(option4);
 //  //使图片自适应页面
 //  window.addEventListener("resize", function() {
 //     myChart.resize();
 //   });}, 2000);
 
-setTimeout(() => {
-    var productName = [];
-    var nums = [];
+
+    var productName4 = [];
+    var nums4 = [];
     var id = 31;
 
     //时间戳转换为时间函数
@@ -122,29 +122,29 @@ setTimeout(() => {
 
 
     //AJAX接收数据主体
-    $.ajax({
-        type:"GET",
-        url:"http://10.17.100.131:8080/initreq",
-        data:{},
-        dataType:"json",
-        async:true,
-        success:function (result) {
+    // $.ajax({
+    //     type:"GET",
+    //     url:"http://10.17.100.131:8080/initreq",
+    //     data:{},
+    //     dataType:"json",
+    //     async:true,
+    //     success:function (result) {
 
-            for (var i = 0; i < result.length; i++){
-                var SQLTime = result[i].ts;
-                var time = new Date(SQLTime);
-                productName.push(formateDate(time));
-                nums.push(result[i].avgReqTime);
-            }
+    //         for (var i = 0; i < result.length; i++){
+    //             var SQLTime = result[i].ts;
+    //             var time = new Date(SQLTime);
+    //             productName4.push(formateDate(time));
+    //             nums.push(result[i].avgReqTime);
+    //         }
 
-        },
-        error :function(errorMsg) {
-            alert("获取后台数据失败！");
-        }
-    });
+    //     },
+    //     error :function(errorMsg) {
+    //         alert("获取后台数据失败！");
+    //     }
+    // });
 
     // 指定图表的配置项和数据
-    var option = {
+    var option4 = {
         color:["#3398DB"],
         title: {
             text: '平均请求时延',
@@ -171,7 +171,7 @@ setTimeout(() => {
         },
         xAxis: {
             //结合
-            data: productName,
+            data: productName4,
             axisTick: {
                 show: false // 去除刻度线
               },
@@ -196,7 +196,7 @@ setTimeout(() => {
             name: '平均请求时延',
             type: 'line',
             //结合
-            data: nums
+            data: nums4
         }]
     };
 
@@ -210,39 +210,39 @@ setTimeout(() => {
             success:function (json) {
                 var newSQLTime = json.ts;
                 var newTime = new Date(newSQLTime);
-                productName.push(formateDate(newTime));
-                nums.push(json.avgReqTime);
+                productName4.push(formateDate(newTime));
+                nums4.push(json.avgReqTime);
                 id++;
             },
             error :function(errorMsg) {
                 alert("获取后台数据失败！");
             }
         });
-        if (shift) {
-            productName.shift();
-            nums.shift();
+        if (nums4.length>=30) {
+            productName4.shift();
+            nums4.shift();
         }
     }
 
     setInterval(function () {
         addData4(true);
-        myChart.setOption({
+        myChart4.setOption({
             xAxis: {
-                data: productName
+                data: productName4
             },
             series: [{
                 name:'平均请求时延',
-                data: nums
+                data: nums4
             }]
         });
     }, 1500);
 
     //初始化Echarts
-    var myChart = echarts.init(document.getElementById('main'));
+    var myChart4 = echarts.init(document.getElementById('main4'));
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myChart4.setOption(option4);
     //使图片自适应页面
     window.addEventListener("resize", function() {
-        myChart.resize();
-    });}, 2000);
+        myChart4.resize();
+    });
 

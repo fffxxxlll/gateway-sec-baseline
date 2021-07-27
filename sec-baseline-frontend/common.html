@@ -19,19 +19,19 @@
             <nav class="form clearfix">
                 <div class="title iconfont icon-smartagzhinengjieruwangguan">融合安全网关</div>
                 <div class="form-item">
-                    <a href="./common1.html" class="iconfont icon-smartagzhinengjieruwangguan">http_code</a>
+                    <button id="button" type="button" class="iconfont icon-smartagzhinengjieruwangguan current" >http_code</button>
                 </div>
                 <div class="form-item">
-                    <a href="./common2.html"  class="iconfont icon-smartagzhinengjieruwangguan">http_user_agent</a>
+                    <button id="button" type="button" class="iconfont icon-smartagzhinengjieruwangguan" >http_user_agent</button>
                 </div>
                 <div class="form-item">
-                    <a href="./common3.html"  class="iconfont icon-smartagzhinengjieruwangguan">recv_size</a>
+                    <button id="button" type="button" class="iconfont icon-smartagzhinengjieruwangguan" >recv_size</button>
                 </div>
                 <div class="form-item">
-                    <a href="./common4.html"  class="iconfont icon-smartagzhinengjieruwangguan">request_time</a>
+                    <button id="button" type="button" class="iconfont icon-smartagzhinengjieruwangguan" >request_time</button>
                 </div>
                 <div class="form-item">
-                    <a href="./common5.html"  class="iconfont icon-smartagzhinengjieruwangguan">response_time</a>
+                    <button id="button" type="button" class="iconfont icon-smartagzhinengjieruwangguan" >response_time</button>
                 </div>
             </nav>
         </div>
@@ -58,8 +58,46 @@
                     }
                 </script>
             </div>
-            <div id="main" class="img"></div>
+            <div id="main1" class="img"></div>
+            <div id="main2" class="img"></div>
+            <div id="main3" class="img"></div>
+            <div id="main4" class="img"></div>
+            <div id="main5" class="img"></div>
         </div>
     </div>
+    <script>
+        //1.模块选项卡，点击某一个，当前选中 其余不变（排他思想）  修改类名的方式
+        //获取元素
+        var form = document.querySelector('.form');
+        var lis = form.querySelectorAll('button');
+        var img = document.querySelectorAll('.img');
+        for(var i=0;i<lis.length;i++){
+            //开始给5个button设置索引号
+            lis[i].setAttribute('index',i);
+            lis[i].onclick = function(){
+                //干掉所有人 其余的button清除class这个类
+                for(var i=0;i<lis.length;i++){
+                    lis[i].className = '';
+                }
+                //留下自己
+                this.className = 'iconfont icon-smartagzhinengjieruwangguan current';
+
+                //2.下面的是显示内容模块
+                 var index = this.getAttribute('index');
+                 console.log(index);
+                 //干掉所有人让其余的img这些div隐藏
+                for(var i=0;i<img.length;i++){
+                    img[i].style.display = 'none';
+                }
+                 //留下我自己  让对应的img显示出来
+                 img[index].style.display = 'block';
+            }
+        }
+    </script>
+    <script src="./js/common1.js"></script>
+    <script src="./js/common2.js"></script>
+    <script src="./js/common3.js"></script>
+    <script src="./js/common4.js"></script>
+    <script src="./js/common5.js"></script>
 </body>
 </html>

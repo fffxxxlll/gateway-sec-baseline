@@ -46,10 +46,15 @@ html,body{
     margin: auto;
     margin-bottom: 20px;
 }
-.container .sidebar .form .form-item a{
+.container .sidebar .form .form-item button{
     color: white;
-    text-decoration: none;
     font-size: 25px;
+    width: 250px;
+    height: 80px;
+    border-radius: 50px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
 }
 
 .container .sidebar .form .form-item:hover{

@@ -1,6 +1,5 @@
-setTimeout(() => {
-    var productName = [];
-    var nums = [];
+    var productName1 = [];
+    var nums1 = [];
     var id = 31;
 
     //时间戳转换为时间函数
@@ -14,29 +13,29 @@ setTimeout(() => {
 
 
     //AJAX接收数据主体
-    $.ajax({
-        type:"GET",
-        url:"http://10.17.100.131:8080/initreq",
-        data:{},
-        dataType:"json",
-        async:true,
-        success:function (result) {
+    // $.ajax({
+    //     type:"GET",
+    //     url:"http://10.17.100.131:8080/initreq",
+    //     data:{},
+    //     dataType:"json",
+    //     async:true,
+    //     success:function (result) {
 
-            for (var i = 0; i < result.length; i++){
-                var SQLTime = result[i].ts;
-                var time = new Date(SQLTime);
-                productName.push(formateDate(time));
-                nums.push(result[i].avgReqTime);
-            }
+    //         for (var i = 0; i < result.length; i++){
+    //             var SQLTime = result[i].ts;
+    //             var time = new Date(SQLTime);
+    //             productName.push(formateDate(time));
+    //             nums.push(result[i].avgReqTime);
+    //         }
 
-        },
-        error :function(errorMsg) {
-            alert("获取后台数据失败！");
-        }
-    });
+    //     },
+    //     error :function(errorMsg) {
+    //         alert("获取后台数据失败！");
+    //     }
+    // });
 
     // 指定图表的配置项和数据
-    var option = {
+    var option1 = {
         color:["#00d887"],
         title: {
             text: '平均请求时延',
@@ -63,7 +62,7 @@ setTimeout(() => {
           },
         xAxis: {
             //结合
-            data: productName,
+            data: productName1,
             axisTick: {
                 show: false // 去除刻度线
               },
@@ -134,7 +133,7 @@ setTimeout(() => {
         // 开始不显示拐点， 鼠标经过显示
         showSymbol: false,
             //结合
-            data: nums
+            data: nums1
         }]
     };
 
@@ -148,42 +147,42 @@ setTimeout(() => {
             success:function (json) {
                 var newSQLTime = json.ts;
                 var newTime = new Date(newSQLTime);
-                productName.push(formateDate(newTime));
-                nums.push(json.avgReqTime);
+                productName1.push(formateDate(newTime));
+                nums1.push(json.avgReqTime);
                 id++;
             },
             error :function(errorMsg) {
                 alert("获取后台数据失败！");
             }
         });
-        if (shift) {
-            productName.shift();
-            nums.shift();
+        if (nums1.length >= 30) {
+            productName1.shift();
+            nums1.shift();
         }
     }
 
     setInterval(function () {
         addData(true);
-        myChart.setOption({
+        myChart1.setOption({
             xAxis: {
-                data: productName
+                data: productName1
             },
             series: 
             
             
             [{
                 name:'平均请求时延',
-                data: nums
+                data: nums1
             }]
         });
     }, 1500);
 
     //初始化Echarts
-    var myChart = echarts.init(document.getElementById('main'));
+    var myChart1 = echarts.init(document.getElementById('main1'));
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myChart1.setOption(option1);
     //使图片自适应页面
     window.addEventListener("resize", function() {
-        myChart.resize();
-      });}, 2000);
+        myChart1.resize();
+      });
 

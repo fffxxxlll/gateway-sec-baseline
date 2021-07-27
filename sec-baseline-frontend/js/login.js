@@ -21,7 +21,7 @@ function loginHome(){
 
 
 function login(json) {
-    $.ajax({url:"http://10.17.100.131:8080/login",
+    $.ajax({url:"http://10.17.70.52:8080/login",
         type: 'post',
         contentType: 'application/json',
         data:JSON.stringify(json)
@@ -31,7 +31,7 @@ function login(json) {
                 alert(data.msg)
             } else {
                 document.cookie = "token=" + data.token;
-                $(location).attr('href', 'common1.html');
+                $(location).attr('href', 'common.html');
             }
         },
         error:function (data) {
@@ -43,7 +43,7 @@ function login(json) {
 
 function loginCheck (token) {
     $.ajax({
-        url:"http://10.17.100.131:8080/success",
+        url:"http://10.17.70.52:8080/success",
         type: 'post',
         beforeSend: function(request) {
             request.setRequestHeader("Jwt-Token", token);

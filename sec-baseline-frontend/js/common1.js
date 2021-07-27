@@ -1,6 +1,8 @@
+    //初始化Echarts
+    var myChart1 = echarts.init(document.getElementById('main1'));
     var productName1 = [];
     var nums1 = [];
-    var id = 31;
+    var id = 1;
 
     //时间戳转换为时间函数
     function formateDate(time){
@@ -15,7 +17,7 @@
     //AJAX接收数据主体
     // $.ajax({
     //     type:"GET",
-    //     url:"http://10.17.100.131:8080/initreq",
+    //     url:"http://10.17.70.52:8080/initreq",
     //     data:{},
     //     dataType:"json",
     //     async:true,
@@ -39,7 +41,7 @@
         color:["#00d887"],
         title: {
             text: '平均请求时延',
-            left: '10%',
+            left: '20%',
             top: '5%',
             textStyle: {
                 fontSize: 20,
@@ -140,7 +142,7 @@
     function addData(shift) {
         $.ajax({
             type:"GET",
-            url:"http://10.17.100.131:8080/reqgetinfo",
+            url:"http://10.17.70.52:8080/reqgetinfo",
             data:{id:id.toString()},
             dataType:"json",
             async:true,
@@ -177,10 +179,11 @@
         });
     }, 1500);
 
-    //初始化Echarts
-    var myChart1 = echarts.init(document.getElementById('main1'));
+    
+    
     // 使用刚指定的配置项和数据显示图表。
     myChart1.setOption(option1);
+   
     //使图片自适应页面
     window.addEventListener("resize", function() {
         myChart1.resize();

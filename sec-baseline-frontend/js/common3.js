@@ -1,33 +1,8 @@
-// setTimeout(() => {
-//     var chartDom = document.getElementById('main');
-//     var myChart3 = echarts.init(chartDom);
-//     var option3;
-//
-//     option3 = {
-//     xAxis: {
-//         type: 'category',
-//         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-//     },
-//     yAxis: {
-//         type: 'value'
-//     },
-//     series: [{
-//         data: [820, 932, 901, 934, 1290, 1330, 1320],
-//         type: 'line',
-//         smooth: true
-//     }]
-// };
-//
-//     option3 && myChart3.setOption(option3);
-//  //使图片自适应页面
-//  window.addEventListener("resize", function() {
-//     myChart3.resize();
-//   });}, 2000);
-
-
+    //初始化Echarts
+    var myChart3 = echarts.init(document.getElementById('main3'));
     var productName3 = [];
     var nums3 = [];
-    var id = 31;
+    var id = 1;
 
     //时间戳转换为时间函数
     function formateDate(time){
@@ -42,7 +17,7 @@
     //AJAX接收数据主体
     // $.ajax({
     //     type:"GET",
-    //     url:"http://10.17.100.131:8080/initsen",
+    //     url:"http://10.17.70.52:8080/initsen",
     //     data:{},
     //     dataType:"json",
     //     async:true,
@@ -66,7 +41,7 @@
         color:["#3398DB"],
         title: {
             text: '平均发送大小',
-            left: '10%',
+            left: '20%',
             top: '5%',
             textStyle: {
                 fontSize: 20,
@@ -122,7 +97,7 @@
     function addData3(shift) {
         $.ajax({
             type:"GET",
-            url:"http://10.17.100.131:8080/sengetinfo",
+            url:"http://10.17.70.52:8080/sengetinfo",
             data:{id:id.toString()},
             dataType:"json",
             async:true,
@@ -156,8 +131,7 @@
         });
     }, 1500);
 
-    //初始化Echarts
-    var myChart3 = echarts.init(document.getElementById('main3'));
+    
     // 使用刚指定的配置项和数据显示图表。
     myChart3.setOption(option3);
     //使图片自适应页面

@@ -1,7 +1,8 @@
-
+    //初始化Echarts
+    var myChart5 = echarts.init(document.getElementById('main5'));
     var productName5 = [];
     var nums5 = [];
-    var id = 31;
+    var id = 1;
 
     //时间戳转换为时间函数
     function formateDate(time){
@@ -16,7 +17,7 @@
     //AJAX接收数据主体
     // $.ajax({
     //     type:"GET",
-    //     url:"http://10.17.100.131:8080/initres",
+    //     url:"http://10.17.70.52:8080/initres",
     //     data:{},
     //     dataType:"json",
     //     async:true,
@@ -40,7 +41,7 @@
         color:["#3398DB"],
         title: {
             text: '平均响应时延',
-            left: '10%',
+            left: '20%',
             top: '5%',
             textStyle: {
                 fontSize: 20,
@@ -91,11 +92,11 @@
             data: nums5
         }]
     };
-
+    
     function addData5(shift) {
         $.ajax({
             type:"GET",
-            url:"http://10.17.100.131:8080/resgetinfo",
+            url:"http://10.17.70.52:8080/resgetinfo",
             data:{id:id.toString()},
             dataType:"json",
             async:true,
@@ -129,8 +130,8 @@
         });
     }, 1500);
 
-    //初始化Echarts
-    var myChart5 = echarts.init(document.getElementById('main5'));
+    
+    
     // 使用刚指定的配置项和数据显示图表。
     myChart5.setOption(option5);
     //使图片自适应页面

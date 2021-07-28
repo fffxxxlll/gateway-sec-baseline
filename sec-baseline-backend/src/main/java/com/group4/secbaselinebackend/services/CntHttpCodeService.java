@@ -3,11 +3,12 @@ package com.group4.secbaselinebackend.services;
 import com.group4.secbaselinebackend.mapper.CntHttpCodeMapper;
 import com.group4.secbaselinebackend.models.AlertInfo;
 import com.group4.secbaselinebackend.models.CntHttpCode;
-import com.group4.secbaselinebackend.models.CntUserAgent;
-import com.group4.secbaselinebackend.utils.PropertiesReader;
+import com.group4.secbaselinebackend.utils.PropertiesUtil;
 import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * @author feng xl
@@ -40,9 +41,9 @@ public class CntHttpCodeService {
     }
 
     private Integer judgeAlert(CntHttpCode cntHttpCode) {
-        Integer avgCnt404 = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.cnt404"));
-        Integer  top100Cnt404 = Integer.parseInt((String) PropertiesReader.getValueByKey("top100.cnt404"));
-        Integer avgCnt500 = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.cnt500"));
+        Integer avgCnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.cnt404"));
+        Integer  top100Cnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("top100.cnt404"));
+        Integer avgCnt500 = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.cnt500"));
         Integer  aAvgCnt404 = Integer.parseInt(cntHttpCode.getCnt400() + "");
         Integer  aAvgCnt500 = Integer.parseInt(cntHttpCode.getCnt500() + "");
         if(aAvgCnt500 > avgCnt500){

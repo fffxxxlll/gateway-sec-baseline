@@ -1,5 +1,8 @@
 package com.group4.secbaselinebackend.services;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.group4.secbaselinebackend.mapper.AlertInfoMapper;
 import com.group4.secbaselinebackend.models.AlertInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +26,11 @@ public class AlertInfoService {
 
     public Integer delAlertById(Integer id) {
         return alertInfoMapper.deleteById(id);
+    }
+
+    public Page<AlertInfo> selectByPage(Integer pageNum) {
+        Page<AlertInfo> page = new Page<>(pageNum, 10);
+        Page<AlertInfo> selectPage = alertInfoMapper.selectPage(page, null);
+        return selectPage;
     }
 }

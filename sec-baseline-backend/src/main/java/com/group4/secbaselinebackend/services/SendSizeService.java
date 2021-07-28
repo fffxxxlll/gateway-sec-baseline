@@ -2,15 +2,13 @@ package com.group4.secbaselinebackend.services;
 
 import com.group4.secbaselinebackend.mapper.SendSizeMapper;
 import com.group4.secbaselinebackend.models.AlertInfo;
-import com.group4.secbaselinebackend.models.AvgRequestTime;
 import com.group4.secbaselinebackend.models.AvgSendSize;
-import com.group4.secbaselinebackend.utils.PropertiesReader;
+import com.group4.secbaselinebackend.utils.PropertiesUtil;
 import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-import java.util.List;
+import java.io.IOException;
 
 
 @Service
@@ -29,7 +27,7 @@ public class SendSizeService {
 //        avgSendSizes.forEach(System.out::println);
 //    }
 
-    public AvgSendSize selectOne(Integer id){
+    public AvgSendSize selectOne(Integer id) {
         AvgSendSize avgSendSize = sendSizeMapper.selectById(id);
         doAlert(avgSendSize);
         return avgSendSize;
@@ -44,9 +42,9 @@ public class SendSizeService {
     }
 
     private Integer judgeAlert(AvgSendSize avgSendSize) {
-        Integer avgSize = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.sendsize"));
-        Integer top100SendSize = Integer.parseInt((String) PropertiesReader.getValueByKey("top100.sendsize"));
-        Integer avgTop100SendSize = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.top100.sendsize"));
+        Integer avgSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.sendsize"));
+        Integer top100SendSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("top100.sendsize"));
+        Integer avgTop100SendSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top100.sendsize"));
         Integer avgSendSize1 = Integer.parseInt(avgSendSize.getAvgSendSize() + "");
         if(avgSendSize1 > avgSize){
             this.alertCnt++;

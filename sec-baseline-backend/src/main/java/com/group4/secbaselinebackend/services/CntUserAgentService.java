@@ -1,14 +1,14 @@
 package com.group4.secbaselinebackend.services;
 
-import com.group4.secbaselinebackend.mapper.CntHttpCodeMapper;
 import com.group4.secbaselinebackend.mapper.CntUserAgentMapper;
 import com.group4.secbaselinebackend.models.AlertInfo;
-import com.group4.secbaselinebackend.models.AvgSendSize;
 import com.group4.secbaselinebackend.models.CntUserAgent;
-import com.group4.secbaselinebackend.utils.PropertiesReader;
+import com.group4.secbaselinebackend.utils.PropertiesUtil;
 import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 /**
  * @author feng xl
@@ -41,9 +41,9 @@ public class CntUserAgentService {
     }
 
     private Integer judgeAlert(CntUserAgent cntUserAgent) {
-        Integer avgRobotNum = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.robotnum.ps"));
-        Integer top100RobotNum = Integer.parseInt((String) PropertiesReader.getValueByKey("top100.robotnum.ps"));
-        Integer avgTop100RobotNum = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.top100.robotnum.ps"));
+        Integer avgRobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.robotnum.ps"));
+        Integer top100RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("top100.robotnum.ps"));
+        Integer avgTop100RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top100.robotnum.ps"));
         Integer avgRobotNum1 = Integer.parseInt(cntUserAgent.getRobotNum() + "");
         if(avgRobotNum1 > avgRobotNum){
             this.alertCnt++;

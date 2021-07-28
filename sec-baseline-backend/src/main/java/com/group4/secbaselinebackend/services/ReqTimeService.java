@@ -3,11 +3,12 @@ package com.group4.secbaselinebackend.services;
 import com.group4.secbaselinebackend.mapper.ReqTimeMapper;
 import com.group4.secbaselinebackend.models.AlertInfo;
 import com.group4.secbaselinebackend.models.AvgRequestTime;
-import com.group4.secbaselinebackend.utils.PropertiesReader;
+import com.group4.secbaselinebackend.utils.PropertiesUtil;
 import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 
 
 @Service
@@ -22,7 +23,7 @@ public class ReqTimeService {
     @Autowired
     AlertInfoService alertInfoService;
 
-    public AvgRequestTime selectOne(Integer id){
+    public AvgRequestTime selectOne(Integer id) {
         AvgRequestTime avgRequestTime = reqTimeMapper.selectById(id);
         doAlert(avgRequestTime);
         return avgRequestTime;
@@ -38,9 +39,9 @@ public class ReqTimeService {
     }
 
     private Integer judgeAlert(AvgRequestTime avgRequestTime) {
-        Float avgReqTime = Float.valueOf((String) PropertiesReader.getValueByKey("avg.reqtime")) ;
-        Float top100ReqTime = Float.valueOf((String) PropertiesReader.getValueByKey("top100.reqtime")) ;
-        Float avgTop100ReqTime = Float.valueOf((String) PropertiesReader.getValueByKey("avg.top100.reqtime")) ;
+        Float avgReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.reqtime")) ;
+        Float top100ReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("top100.reqtime")) ;
+        Float avgTop100ReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.top100.reqtime")) ;
         Float avgReqTime1 = avgRequestTime.getAvgReqTime();
         if(avgReqTime1 > avgReqTime){
             this.alertCnt++;

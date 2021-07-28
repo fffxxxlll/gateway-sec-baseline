@@ -1,11 +1,7 @@
 package com.group4.secbaselinebackend.controllers;
 
-import com.group4.secbaselinebackend.models.AvgRequestTime;
-import com.group4.secbaselinebackend.models.AvgResponseTime;
-import com.group4.secbaselinebackend.models.AvgSendSize;
-import com.group4.secbaselinebackend.services.ReqTimeService;
-import com.group4.secbaselinebackend.services.ResTimeService;
-import com.group4.secbaselinebackend.services.SendSizeService;
+import com.group4.secbaselinebackend.models.*;
+import com.group4.secbaselinebackend.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +24,11 @@ public class WebController {
 
     @Autowired
     private SendSizeService sendSizeService;
+
+    @Autowired
+    private CntHttpCodeService httpCodeService;
+    @Autowired
+    private CntUserAgentService cntUserAgentService;
 
 //    处理平均请求时间图表
     @CrossOrigin
@@ -100,9 +101,19 @@ public class WebController {
         int temp = Integer.parseInt(id);
         return sendSizeService.selectOne(temp);
     }
-//    @CrossOrigin
-//    @RequestMapping("/senview")
-//    public String html3(){
-//        return "senview";
-//    }
+
+    @ResponseBody
+    @RequestMapping("/getcodeinfo")
+    public CntHttpCode getCodeInfo(@RequestParam("id") String id){
+        int temp = Integer.parseInt(id);
+        return httpCodeService.selectOne(temp);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getagentinfo")
+    public CntUserAgent getAgentInfo(@RequestParam("id") String id){
+        int temp = Integer.parseInt(id);
+        return cntUserAgentService.selectOne(temp);
+    }
+
 }

@@ -21,4 +21,5 @@ public class AlertInfo {
     private String alertDesc;
     private Integer level;
     private Integer isDone;
+    private BigInteger ts;
 }

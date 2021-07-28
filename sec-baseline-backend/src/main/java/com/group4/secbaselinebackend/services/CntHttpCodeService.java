@@ -35,7 +35,7 @@ public class CntHttpCodeService {
     public void doAlert(CntHttpCode cntHttpCode) {
         Integer flag = this.judgeAlert(cntHttpCode);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag));
+            alertInfoService.insertAlert(createAlertInfo(flag, cntHttpCode));
         }
     }
 
@@ -66,12 +66,13 @@ public class CntHttpCodeService {
         return 0;
     }
 
-    private AlertInfo createAlertInfo(Integer flag) {
+    private AlertInfo createAlertInfo(Integer flag, CntHttpCode cntHttpCode) {
         AlertInfo alertInfo = new AlertInfo();
         alertInfo.setAlertType("请求状态异常");
         alertInfo.setAlertTypeId(5);
         alertInfo.setLevel(flag);
         alertInfo.setIsDone(0);
+        alertInfo.setTs(cntHttpCode.getTs());
         switch (flag){
             case 1 : alertInfo.setAlertDesc(AlertDesc.LAST_404_CODE.getCode());break;
             case 2 : alertInfo.setAlertDesc(AlertDesc.MIDDLE_NUM_404.getCode());break;

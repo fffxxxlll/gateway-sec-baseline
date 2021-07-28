@@ -36,7 +36,7 @@ public class CntUserAgentService {
     public void doAlert(CntUserAgent cntUserAgent) {
         Integer flag = this.judgeAlert(cntUserAgent);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag));
+            alertInfoService.insertAlert(createAlertInfo(flag, cntUserAgent));
         }
     }
 
@@ -62,12 +62,13 @@ public class CntUserAgentService {
         return 0;
     }
 
-    private AlertInfo createAlertInfo(Integer flag) {
+    private AlertInfo createAlertInfo(Integer flag, CntUserAgent cntUserAgent) {
         AlertInfo alertInfo = new AlertInfo();
         alertInfo.setAlertType("脚本数量过多");
         alertInfo.setAlertTypeId(4);
         alertInfo.setLevel(flag);
         alertInfo.setIsDone(0);
+        alertInfo.setTs(cntUserAgent.getTs());
         switch (flag){
             case 1 : alertInfo.setAlertDesc(AlertDesc.LAST_MANY_ROBOT.getCode());break;
             case 2 : alertInfo.setAlertDesc(AlertDesc.MIDDLE_NUM_ROBOT.getCode());break;

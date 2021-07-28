@@ -32,7 +32,7 @@ public class ResTimeService {
     public void doAlert(AvgResponseTime avgResponseTime) {
         Integer flag = this.judgeAlert(avgResponseTime);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag));
+            alertInfoService.insertAlert(createAlertInfo(flag, avgResponseTime));
         }
     }
 
@@ -58,12 +58,13 @@ public class ResTimeService {
         return 0;
     }
 
-    private AlertInfo createAlertInfo(Integer flag) {
+    private AlertInfo createAlertInfo(Integer flag, AvgResponseTime avgResponseTime) {
         AlertInfo alertInfo = new AlertInfo();
         alertInfo.setAlertType("响应延迟");
         alertInfo.setAlertTypeId(2);
         alertInfo.setLevel(flag);
         alertInfo.setIsDone(0);
+        alertInfo.setTs(avgResponseTime.getTs());
         switch (flag){
             case 1 : alertInfo.setAlertDesc(AlertDesc.LAST_LATENCY.getCode());break;
             case 2 : alertInfo.setAlertDesc(AlertDesc.MIDDLE_LATENCY.getCode());break;

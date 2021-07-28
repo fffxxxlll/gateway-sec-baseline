@@ -1,25 +1,84 @@
 package com.group4.secbaselinebackend.services;
 
 import com.group4.secbaselinebackend.mapper.SendSizeMapper;
+import com.group4.secbaselinebackend.models.AlertInfo;
+import com.group4.secbaselinebackend.models.AvgRequestTime;
 import com.group4.secbaselinebackend.models.AvgSendSize;
+import com.group4.secbaselinebackend.utils.PropertiesReader;
+import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.List;
 
 
 @Service
 public class SendSizeService {
 
+    private Integer alertCnt = 0;
+
     @Autowired
     SendSizeMapper sendSizeMapper;
 
+
+    @Autowired
+    AlertInfoService alertInfoService;
 //    public void selectAll() {
 //        List<AvgSendSize> avgSendSizes = sendSizeMapper.selectList(null);
 //        avgSendSizes.forEach(System.out::println);
 //    }
 
     public AvgSendSize selectOne(Integer id){
-        return sendSizeMapper.selectById(id);
+        AvgSendSize avgSendSize = sendSizeMapper.selectById(id);
+        doAlert(avgSendSize);
+        return avgSendSize;
+    }
+
+
+    public void doAlert(AvgSendSize avgSendSize) {
+        Integer flag = this.judgeAlert(avgSendSize);
+        if(flag > 0){
+            alertInfoService.insertAlert(createAlertInfo(flag));
+        }
+    }
+
+    private Integer judgeAlert(AvgSendSize avgSendSize) {
+        Integer avgSize = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.sendsize"));
+        Integer top100SendSize = Integer.parseInt((String) PropertiesReader.getValueByKey("top100.sendsize"));
+        Integer avgTop100SendSize = Integer.parseInt((String) PropertiesReader.getValueByKey("avg.top100.sendsize"));
+        Integer avgSendSize1 = Integer.parseInt(avgSendSize.getAvgSendSize() + "");
+        if(avgSendSize1 > avgSize){
+            this.alertCnt++;
+        } else{
+            this.alertCnt = 0;
+        }
+
+        if(avgSendSize1 > avgTop100SendSize)
+            return 3;
+        if(avgSendSize1 > top100SendSize && this.alertCnt >=10)
+            return 3;
+        if(avgSendSize1 > top100SendSize)
+            return 2;
+        if(this.alertCnt >= 10)
+            return 1;
+        return 0;
+    }
+
+    private AlertInfo createAlertInfo(Integer flag) {
+        AlertInfo alertInfo = new AlertInfo();
+        alertInfo.setAlertType("大量数据流");
+        alertInfo.setAlertTypeId(3);
+        alertInfo.setLevel(flag);
+        alertInfo.setIsDone(0);
+        switch (flag){
+            case 1 : alertInfo.setAlertDesc(AlertDesc.LAST_OVERSIZE_DATA_FLOW.getCode());break;
+            case 2 : alertInfo.setAlertDesc(AlertDesc.MIDDLE_DATA_FLOW.getCode());break;
+            case 3 : alertInfo.setAlertDesc(
+                    AlertDesc.LAST_OVERSIZE_DATA_FLOW.getCode() + ";" + AlertDesc.MASSIVE_DATA_FLOW.getCode()
+            );break;
+            default : break;
+        }
+        return alertInfo;
     }
 }

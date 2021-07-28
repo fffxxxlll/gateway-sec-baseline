@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.redis;
+package com.group4.secbaselinebackend.config;
 
 /**
  * @author gxw

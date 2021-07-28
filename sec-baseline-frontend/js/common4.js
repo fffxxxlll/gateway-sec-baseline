@@ -37,17 +37,80 @@
     // });
 
     // 指定图表的配置项和数据
+    // var option4 = {
+    //     color:["#3398DB"],
+    //     title: {
+    //         text: '平均请求时延',
+    //         left: '10%',
+    //         top: '5%',
+    //         textStyle: {
+    //             fontSize: 20,
+    //             fontStyle: "italic",
+    //             color:'#3398DB'
+    //           }
+    //     },
+    //     tooltip: {},
+    //     legend: {
+    //         data:['平均请求时延'],
+    //         right: '10%', // 距离右边10%
+    //         top: '5%',
+    //     },
+    //     grid:{
+    //         top: '20%',
+    //         left: '3%',
+    //         right: '4%',
+    //         bottom: '3%',
+    //         containLabel:true
+    //     },
+    //     xAxis: {
+    //         //结合
+    //         data: productName4,
+    //         axisTick: {
+    //             show: false // 去除刻度线
+    //           },
+    //           axisLabel: {
+    //             color: '#4c9bfd' // 文本颜色
+    //           },
+    //           axisLine: {
+    //             show: true // 去除轴线
+    //           },
+    //           boundaryGap: false
+    //     },
+
+    //     yAxis: {
+    //         axisTick: {
+    //             show: false  // 去除刻度
+    //           },
+    //           axisLabel: {
+    //             color: '#4c9bfd' // 文字颜色
+    //           }
+    //     },
+    //     series: [{
+    //         name: '平均请求时延',
+    //         type: 'line',
+    //         //结合
+    //         data: nums4
+    //     }]
+    // };
     var option4 = {
-        color:["#3398DB"],
+        color:["#00d887"],
         title: {
             text: '平均请求时延',
-            left: '20%',
+            left: '10%',
             top: '5%',
             textStyle: {
                 fontSize: 20,
                 fontStyle: "italic",
-                color:'#3398DB'
+                color:'#00d887'
               }
+        },
+        toolbox: {
+            feature: {
+                dataView: {show: true, readOnly: false},
+                saveAsImage: {show: true}
+            },
+            right:"4%"
+            
         },
         tooltip: {},
         legend: {
@@ -55,13 +118,13 @@
             right: '10%', // 距离右边10%
             top: '5%',
         },
-        grid:{
+        grid: { 
             top: '20%',
             left: '3%',
             right: '4%',
             bottom: '3%',
-            containLabel:true
-        },
+            containLabel: true // 包含刻度文字在内
+          },
         xAxis: {
             //结合
             data: productName4,
@@ -83,19 +146,70 @@
               },
               axisLabel: {
                 color: '#4c9bfd' // 文字颜色
-              }
+              },
+            //   splitLine: {
+            //     lineStyle: {
+            //       color: '#012f4a' // 分割线颜色
+            //     }
+            //   }
         },
         series: [{
             name: '平均请求时延',
             type: 'line',
+            smooth: true,
+        lineStyle: {
+          normal: {
+            color: "#00d887",
+            width: 2
+          }
+         },
+         areaStyle: {
+          normal: {
+            color: new echarts.graphic.LinearGradient(
+              0,
+              0,
+              0,
+              1,
+              [
+                {
+                  offset: 0,
+                  color: "rgba(0, 216, 135, 0.4)"
+                },
+                {
+                  offset: 0.8,
+                  color: "rgba(0, 216, 135, 0.1)"
+                }
+              ],
+              false
+            ),
+            shadowColor: "rgba(0, 0, 0, 0.1)"
+          }
+        },
+        // 设置拐点 小圆点
+        symbol: "circle",
+        // 拐点大小
+        symbolSize: 5,
+        // 设置拐点颜色以及边框
+         itemStyle: {
+            color: "#00d887",
+            borderColor: "rgba(221, 220, 107, .1)",
+            borderWidth: 12
+        },
+        // 开始不显示拐点， 鼠标经过显示
+        showSymbol: false,
             //结合
-            data: nums4
+            data: nums4,
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            }
         }]
     };
-
     function addData4(shift) {
         $.ajax({
-            type:"GET",
+            type:"POST",
             url:"http://10.17.70.52:8080/reqgetinfo",
             data:{id:id.toString()},
             dataType:"json",

@@ -41,13 +41,21 @@
         color:["#3398DB"],
         title: {
             text: '平均发送大小',
-            left: '20%',
+            left: '10%',
             top: '5%',
             textStyle: {
                 fontSize: 20,
                 fontStyle: "italic",
                 color:'#3398DB'
               }
+        },
+        toolbox: {
+            feature: {
+                dataView: {show: true, readOnly: false},
+                saveAsImage: {show: true}
+            },
+            right:"4%"
+            
         },
         tooltip: {},
         legend: {
@@ -90,13 +98,19 @@
             name: '流量',
             type: 'line',
             //结合
-            data: nums3
+            data: nums3,
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            }
         }]
     };
 
     function addData3(shift) {
         $.ajax({
-            type:"GET",
+            type:"POST",
             url:"http://10.17.70.52:8080/sengetinfo",
             data:{id:id.toString()},
             dataType:"json",

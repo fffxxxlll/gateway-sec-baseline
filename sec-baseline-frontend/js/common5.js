@@ -41,13 +41,21 @@
         color:["#3398DB"],
         title: {
             text: '平均响应时延',
-            left: '20%',
+            left: '10%',
             top: '5%',
             textStyle: {
                 fontSize: 20,
                 fontStyle: "italic",
                 color:'#3398DB'
               }
+        },
+        toolbox: {
+            feature: {
+                dataView: {show: true, readOnly: false},
+                saveAsImage: {show: true}
+            },
+            right:"4%"
+            
         },
         tooltip: {},
         legend: {
@@ -88,14 +96,21 @@
         series: [{
             name: '平均响应时延',
             type: 'line',
+            smooth:true,
             //结合
-            data: nums5
+            data: nums5,
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            }
         }]
     };
     
     function addData5(shift) {
         $.ajax({
-            type:"GET",
+            type:"POST",
             url:"http://10.17.70.52:8080/resgetinfo",
             data:{id:id.toString()},
             dataType:"json",

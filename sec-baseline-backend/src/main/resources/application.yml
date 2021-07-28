@@ -6,7 +6,7 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: localhost
+    host: 10.17.70.52
     port: 6379
     password: 123456
     pool:
@@ -22,7 +22,7 @@ mybatis-plus:
 
 token:
   expired_in:
-    30
+    30000
   issuer:
     group4
   key:

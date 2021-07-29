@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.wxbean;
+package com.group4.secbaselinebackend.valueObjects;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;

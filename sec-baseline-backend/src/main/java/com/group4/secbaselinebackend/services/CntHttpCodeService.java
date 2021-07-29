@@ -42,7 +42,7 @@ public class CntHttpCodeService {
 
     private Integer judgeAlert(CntHttpCode cntHttpCode) {
         Integer avgCnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.cnt404"));
-        Integer  top100Cnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("top100.cnt404"));
+        Integer  top20Cnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("top20.cnt404"));
         Integer avgCnt500 = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.cnt500"));
         Integer  aAvgCnt404 = Integer.parseInt(cntHttpCode.getCnt400() + "");
         Integer  aAvgCnt500 = Integer.parseInt(cntHttpCode.getCnt500() + "");
@@ -58,9 +58,9 @@ public class CntHttpCodeService {
         }
         if(alert500Cnt >= 4)
             return 4;
-        if(aAvgCnt404 > top100Cnt404 && this.alert404Cnt >= 10)
+        if(aAvgCnt404 > top20Cnt404 && this.alert404Cnt >= 10)
             return 3;
-        if(aAvgCnt404 > top100Cnt404)
+        if(aAvgCnt404 > top20Cnt404)
             return 2;
         if(this.alert404Cnt >= 10)
             return 1;

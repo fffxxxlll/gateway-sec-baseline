@@ -8,7 +8,7 @@ import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
+
 
 /**
  * @author feng xl
@@ -42,8 +42,8 @@ public class CntUserAgentService {
 
     private Integer judgeAlert(CntUserAgent cntUserAgent) {
         Integer avgRobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.robotnum.ps"));
-        Integer top100RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("top100.robotnum.ps"));
-        Integer avgTop100RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top100.robotnum.ps"));
+        Integer top20RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("top20.robotnum.ps"));
+        Integer avgTop20RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top20.robotnum.ps"));
         Integer avgRobotNum1 = Integer.parseInt(cntUserAgent.getRobotNum() + "");
         if(avgRobotNum1 > avgRobotNum){
             this.alertCnt++;
@@ -51,11 +51,11 @@ public class CntUserAgentService {
             this.alertCnt = 0;
         }
 
-        if(avgRobotNum1 > avgTop100RobotNum)
+        if(avgRobotNum1 > avgTop20RobotNum)
             return 3;
-        if(avgRobotNum1 > top100RobotNum && this.alertCnt >= 10)
+        if(avgRobotNum1 > top20RobotNum && this.alertCnt >= 10)
             return 3;
-        if(avgRobotNum1 > top100RobotNum)
+        if(avgRobotNum1 > top20RobotNum)
             return 2;
         if(this.alertCnt >= 10)
             return 1;

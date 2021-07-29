@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.group4.secbaselinebackend.mapper.AlertInfoMapper;
 import com.group4.secbaselinebackend.models.AlertInfo;
+import com.group4.secbaselinebackend.utils.PropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,5 +33,10 @@ public class AlertInfoService {
         Page<AlertInfo> page = new Page<>(pageNum, 10);
         Page<AlertInfo> selectPage = alertInfoMapper.selectPage(page, null);
         return selectPage;
+    }
+
+    public Integer modifyConfig(String key, String value) {
+        Integer res = PropertiesUtil.setValueOfKey(key, value);
+        return res;
     }
 }

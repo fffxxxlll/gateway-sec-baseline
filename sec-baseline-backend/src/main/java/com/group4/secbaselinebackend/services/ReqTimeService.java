@@ -40,8 +40,8 @@ public class ReqTimeService {
 
     private Integer judgeAlert(AvgRequestTime avgRequestTime) {
         Float avgReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.reqtime")) ;
-        Float top100ReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("top100.reqtime")) ;
-        Float avgTop100ReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.top100.reqtime")) ;
+        Float top20ReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("top20.reqtime")) ;
+        Float avgTop20ReqTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.top20.reqtime")) ;
         Float avgReqTime1 = avgRequestTime.getAvgReqTime();
         if(avgReqTime1 > avgReqTime){
             this.alertCnt++;
@@ -49,11 +49,11 @@ public class ReqTimeService {
             this.alertCnt = 0;
         }
 
-        if(avgReqTime1 > avgTop100ReqTime)
+        if(avgReqTime1 > avgTop20ReqTime)
             return 3;
-        if(avgReqTime1 > top100ReqTime && this.alertCnt >=10)
+        if(avgReqTime1 > top20ReqTime && this.alertCnt >=10)
             return 3;
-        if(avgReqTime1 > top100ReqTime)
+        if(avgReqTime1 > top20ReqTime)
             return 2;
         if(this.alertCnt >= 10)
             return 1;

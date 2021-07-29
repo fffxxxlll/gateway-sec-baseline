@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.wxservice;
+package com.group4.secbaselinebackend.services;
 
 /**
  * @author gxw

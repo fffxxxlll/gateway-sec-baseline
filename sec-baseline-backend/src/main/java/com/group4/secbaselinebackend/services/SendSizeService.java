@@ -43,8 +43,8 @@ public class SendSizeService {
 
     private Integer judgeAlert(AvgSendSize avgSendSize) {
         Integer avgSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.sendsize"));
-        Integer top100SendSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("top100.sendsize"));
-        Integer avgTop100SendSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top100.sendsize"));
+        Integer top20SendSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("top20.sendsize"));
+        Integer avgTop20SendSize = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top20.sendsize"));
         Integer avgSendSize1 = Integer.parseInt(avgSendSize.getAvgSendSize() + "");
         if(avgSendSize1 > avgSize){
             this.alertCnt++;
@@ -52,11 +52,11 @@ public class SendSizeService {
             this.alertCnt = 0;
         }
 
-        if(avgSendSize1 > avgTop100SendSize)
+        if(avgSendSize1 > avgTop20SendSize)
             return 3;
-        if(avgSendSize1 > top100SendSize && this.alertCnt >=10)
+        if(avgSendSize1 > top20SendSize && this.alertCnt >=10)
             return 3;
-        if(avgSendSize1 > top100SendSize)
+        if(avgSendSize1 > top20SendSize)
             return 2;
         if(this.alertCnt >= 10)
             return 1;

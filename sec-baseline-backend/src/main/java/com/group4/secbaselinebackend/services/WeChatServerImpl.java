@@ -1,14 +1,14 @@
-package com.group4.secbaselinebackend.wxservice;
+package com.group4.secbaselinebackend.services;
 
 import com.alibaba.fastjson.JSONObject;
+import com.group4.secbaselinebackend.models.AlertInfo;
 import com.group4.secbaselinebackend.redis.RedisUtil;
-import com.group4.secbaselinebackend.wxbean.WeChatBean;
+import com.group4.secbaselinebackend.valueObjects.WeChatBean;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
 import javax.annotation.Resource;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -80,9 +80,9 @@ public class WeChatServerImpl implements WeChatServer {
     }
 
 //    微信公众号告警接口
-    public void sendTemplateMessage(){
+    public void sendTemplateMessage(AlertInfo alertInfo){
+        String value = alertInfo.wrapInfo();
         String currentTime = "11:03";
-        String num = "0.24597";
         String at = getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+at;
         String data = "{\n" +
@@ -99,7 +99,7 @@ public class WeChatServerImpl implements WeChatServer {
                 "                       \"color\":\"#173177\"\n" +
                 "                   },\n" +
                 "                   \"result\": {\n" +
-                "                       \"value\":\""+"异常值为"+num+"\",\n" +
+                "                       \"value\":\""+value+"\",\n" +
                 "                       \"color\":\"#173177\"\n" +
                 "                   }\n" +
                 "           }\n" +

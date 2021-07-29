@@ -37,8 +37,8 @@ public class ResTimeService {
 
     private Integer judgeAlert(AvgResponseTime avgResponseTime) {
         Float avgResTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.restime")) ;
-        Float top100ResTime = Float.valueOf((String) PropertiesUtil.getValueByKey("top100.restime")) ;
-        Float avgTop100ResTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.top100.restime")) ;
+        Float top20ResTime = Float.valueOf((String) PropertiesUtil.getValueByKey("top20.restime")) ;
+        Float avgTop20ResTime = Float.valueOf((String) PropertiesUtil.getValueByKey("avg.top20.restime")) ;
         Float avgResTime1 = avgResponseTime.getAvgResTime();
         if(avgResTime1 > avgResTime){
             this.alertCnt++;
@@ -46,11 +46,11 @@ public class ResTimeService {
             this.alertCnt = 0;
         }
 
-        if(avgResTime1 > avgTop100ResTime)
+        if(avgResTime1 > avgTop20ResTime)
             return 3;
-        if(avgResTime1 > top100ResTime && this.alertCnt >=10)
+        if(avgResTime1 > top20ResTime && this.alertCnt >=10)
             return 3;
-        if(avgResTime1 > top100ResTime)
+        if(avgResTime1 > top20ResTime)
             return 2;
         if(this.alertCnt >= 10)
             return 1;

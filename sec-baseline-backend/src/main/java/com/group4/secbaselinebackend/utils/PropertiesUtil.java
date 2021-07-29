@@ -11,13 +11,27 @@ import java.util.Properties;
 public class PropertiesUtil {
 
 
-    public static final String PROPERTIES_FILE_PATH = "E:\\IntelliJ IDEA 2018.3\\j2ee_project\\sec-baseline\\sec-baseline-backend\\src\\main\\resources\\alertconf.properties";
-    public static Properties properties = new Properties();
+    public static final String PROPERTIES_FILE_PATH = System.getProperty("user.dir") + "\\sec-baseline-backend\\src\\main\\resources\\alertconf.properties";
 
+
+
+    public Properties listProperties() {
+        InputStream in = null;
+        Properties properties = new Properties();
+        try {
+            in = new BufferedInputStream(new FileInputStream(PROPERTIES_FILE_PATH));
+            properties.load(in);
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return properties;
+    }
 
     public static Object getValueByKey(String key) {
         InputStream in = null;
         String property = null;
+        Properties properties = new Properties();
         try {
             in = new BufferedInputStream(new FileInputStream(PROPERTIES_FILE_PATH));
             properties.load(in);
@@ -26,12 +40,12 @@ public class PropertiesUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return property;
     }
 
-    public static void setValueOfKey(String key, String value) {
+    public static Integer setValueOfKey(String key, String value) {
         OutputStream out = null;
+        Properties properties = new Properties();
         try {
             out = new BufferedOutputStream(new FileOutputStream(PROPERTIES_FILE_PATH));
             properties.setProperty(key, value);
@@ -39,7 +53,8 @@ public class PropertiesUtil {
             out.close();
         } catch (IOException e) {
             e.printStackTrace();
+            return 0;
         }
-
+        return 1;
     }
 }

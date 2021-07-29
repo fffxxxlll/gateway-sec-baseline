@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.utils.redis;
+package com.group4.secbaselinebackend.redis;
 
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;

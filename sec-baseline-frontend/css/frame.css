@@ -81,6 +81,18 @@ html,body{
     text-align: center;
     color: #8d8d8d;
 }
+.container .page input{
+    text-decoration: none;
+    color:#8d8d8d;
+    position: absolute;
+    right: 180px;
+    bottom: 0;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: transparent;
+    text-align: center;
+    color: #8d8d8d;
+}
 .container .page .dashboard{
     width: 100%;
     height: 100px;

@@ -16,7 +16,16 @@ var myChart1 = echarts.init(document.getElementById('main1'));
     }
    var option1 = {
         color: colors,
-
+        title:{
+            text:"各http响应返回值数量",
+            left: '10%',
+            top: '5%',
+            textStyle: {
+                fontSize: 20,
+                fontStyle: "italic",
+                color:'#3398DB'
+              }
+        },
         tooltip: {
             trigger: 'axis',
             axisPointer: {
@@ -39,7 +48,9 @@ var myChart1 = echarts.init(document.getElementById('main1'));
             
         },
         legend: {
-            data: ['cnt_400', 'cnt_500', 'cnt_total']
+            data: ['cnt_400', 'cnt_500', 'cnt_total'],
+            right: '10%', // 距离右边10%
+            top: '5%'
         },
         xAxis: [
             {

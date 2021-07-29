@@ -1,4 +1,4 @@
-package com.group4.secbaselinebackend.wxconfig;
+package com.group4.secbaselinebackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

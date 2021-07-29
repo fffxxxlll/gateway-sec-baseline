@@ -8,7 +8,6 @@ import com.group4.secbaselinebackend.valueObjects.AlertDesc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 
 /**
  * @author feng xl
@@ -58,11 +57,11 @@ public class CntHttpCodeService {
         }
         if(alert500Cnt >= 4)
             return 4;
-        if(aAvgCnt404 > top20Cnt404 && this.alert404Cnt >= 10)
+        if(aAvgCnt404 > top20Cnt404 && this.alert404Cnt >= 15)
             return 3;
         if(aAvgCnt404 > top20Cnt404)
             return 2;
-        if(this.alert404Cnt >= 10)
+        if(this.alert404Cnt >= 15)
             return 1;
         return 0;
     }

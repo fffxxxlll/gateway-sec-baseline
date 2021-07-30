@@ -46,10 +46,15 @@ html,body{
     margin: auto;
     margin-bottom: 20px;
 }
-.container .sidebar .form .form-item a{
+.container .sidebar .form .form-item button{
     color: white;
-    text-decoration: none;
     font-size: 25px;
+    width: 250px;
+    height: 80px;
+    border-radius: 50px;
+    border: none;
+    background-color: transparent;
+    text-align: center;
 }
 
 .container .sidebar .form .form-item:hover{
@@ -63,6 +68,30 @@ html,body{
     height: 100%;
     margin-left: 300px;
    
+}
+.container .page button{
+    text-decoration: none;
+    color:#8d8d8d;
+    position: absolute;
+    right: 80px;
+    bottom: 0;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: transparent;
+    text-align: center;
+    color: #8d8d8d;
+}
+.container .page input{
+    text-decoration: none;
+    color:#8d8d8d;
+    position: absolute;
+    right: 180px;
+    bottom: 0;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: transparent;
+    text-align: center;
+    color: #8d8d8d;
 }
 .container .page .dashboard{
     width: 100%;
@@ -96,7 +125,7 @@ html,body{
 } */
 
 .container .page .img{
-    width: 90%;
+    width: 1097.28px;
     height: 560px;
     position: absolute;
     left: 0;

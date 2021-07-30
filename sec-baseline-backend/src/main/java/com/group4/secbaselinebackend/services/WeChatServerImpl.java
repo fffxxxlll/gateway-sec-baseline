@@ -82,7 +82,7 @@ public class WeChatServerImpl implements WeChatServer {
 //    微信公众号告警接口
     public void sendTemplateMessage(AlertInfo alertInfo){
         String value = alertInfo.wrapInfo();
-        String currentTime = "11:03";
+        String currentTime = alertInfo.toDateString(alertInfo.getTs());
         String at = getAccessToken();
         String url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token="+at;
         String data = "{\n" +

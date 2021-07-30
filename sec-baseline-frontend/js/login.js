@@ -31,7 +31,7 @@ function login(json) {
                 alert(data.msg)
             } else {
                 document.cookie = "token=" + data.token;
-                $(location).attr('href', 'common1.html');
+                $(location).attr('href', 'common.html');
             }
         },
         error:function (data) {
@@ -77,3 +77,4 @@ function getCookie(name) {
     ));
     return matches ? decodeURIComponent(matches[1]) : undefined;
 }
+

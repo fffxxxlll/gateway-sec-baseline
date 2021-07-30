@@ -1,8 +1,12 @@
-setTimeout(() => {
-    var productName = [];
-    var nums = [];
-    var id = 31;
+var myChart1 = echarts.init(document.getElementById('main1'));
 
+    //参数
+    var times1 = [];
+    var nums11 = [];
+    var nums12 = [];
+    var nums13 = [];
+    var id1 = 1;
+    var colors = ['#5470C6', '#EE6666', '#91CC75'];
     //时间戳转换为时间函数
     function formateDate(time){
         var hour=time.getHours();     //返回日期中的小时数（0到23）
@@ -10,101 +14,187 @@ setTimeout(() => {
         var second=time.getSeconds(); //返回日期中的秒数（0到59）
         return  hour+":"+minute+":"+second;
     }
-
-
-
-    //AJAX接收数据主体
-    $.ajax({
-        type:"GET",
-        url:"http://localhost:8080/initreq",
-        data:{},
-        dataType:"json",
-        async:true,
-        success:function (result) {
-
-            for (var i = 0; i < result.length; i++){
-                var SQLTime = result[i].ts;
-                var time = new Date(SQLTime);
-                productName.push(formateDate(time));
-                nums.push(result[i].avgReqTime);
+   var option1 = {
+        color: colors,
+        title:{
+            text:"各http响应返回值数量",
+            left: '10%',
+            top: '5%',
+            textStyle: {
+                fontSize: 20,
+                fontStyle: "italic",
+                color:'#3398DB'
+              }
+        },
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'cross'
             }
-
-        },
-        error :function(errorMsg) {
-            alert("获取后台数据失败！");
-        }
-    });
-
-    // 指定图表的配置项和数据
-    var option = {
-        color:["pink"],
-        title: {
-            text: '平均请求时延'
-        },
-        tooltip: {},
-        legend: {
-            data:['时延']
         },
         grid:{
-            containLabel:true
+          top: '20%',
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel:true
+      },
+        toolbox: {
+            feature: {
+                dataView: {show: true, readOnly: false},
+                saveAsImage: {show: true}
+            },
+            right:"4%"
+            
         },
-        xAxis: {
-            //结合
-            data: productName
+        legend: {
+            data: ['cnt_400', 'cnt_500', 'cnt_total'],
+            right: '10%', // 距离右边10%
+            top: '5%'
         },
-
-        yAxis: {},
-        series: [{
-            name: '时延',
-            type: 'line',
-            //结合
-            data: nums
-        }]
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {
+                    alignWithLabel: true
+                },
+                data: times1
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                name: 'cnt_400',
+                min: 0,
+                max: 250,
+                position: 'right',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colors[0]
+                    }
+                },
+                
+            },
+            {
+                type: 'value',
+                name: 'cnt_500',
+                min: 0,
+                max: 250,
+                position: 'right',
+                offset: 80,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colors[1]
+                    }
+                },
+                
+            },
+            {
+                type: 'value',
+                name: 'cnt_total',
+                // min: 0,
+                // max: 25,
+                position: 'left',
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: colors[2]
+                    }
+                },
+               
+            }
+        ],
+        series: [
+            {
+                name: 'cnt_400',
+                type: 'bar',
+                data: nums11,
+                markPoint: {
+                  data: [
+                      {type: 'max', name: '最大值'},
+                      {type: 'min', name: '最小值'}
+                  ]
+              }
+            },
+            {
+                name: 'cnt_500',
+                type: 'bar',
+                yAxisIndex: 1,
+                data: nums12,
+                markPoint: {
+                  data: [
+                      {type: 'max', name: '最大值'},
+                      {type: 'min', name: '最小值'}
+                  ]
+              }
+            },
+            {
+                name: 'cnt_total',
+                type: 'line',
+                yAxisIndex: 2,
+                data: nums13,
+                markPoint: {
+                  data: [
+                      {type: 'max', name: '最大值'},
+                      {type: 'min', name: '最小值'}
+                  ]
+              }
+            }
+        ]
     };
 
     function addData(shift) {
         $.ajax({
-            type:"GET",
-            url:"http://localhost:8080/reqgetinfo",
-            data:{id:id.toString()},
+            type:"POST",
+            url:"http://localhost:8080/getcodeinfo",
+            data:{id:id1.toString()},
             dataType:"json",
             async:true,
             success:function (json) {
                 var newSQLTime = json.ts;
                 var newTime = new Date(newSQLTime);
-                productName.push(formateDate(newTime));
-                nums.push(json.avgReqTime);
-                id++;
+
+
+                times1.push(formateDate(newTime));
+                nums11.push(json.cnt400);
+                nums12.push(json.cnt500);
+                nums13.push(json.cntTotal);
+                id1++;
+
             },
             error :function(errorMsg) {
                 alert("获取后台数据失败！");
             }
         });
-        if (shift) {
-            productName.shift();
-            nums.shift();
+        if (times1.length >= 15) {
+            times1.shift();
+            nums11.shift();
+            nums12.shift();
+            nums13.shift();
         }
     }
 
     setInterval(function () {
         addData(true);
-        myChart.setOption({
+        myChart1.setOption({
             xAxis: {
-                data: productName
+                data: times1
             },
             series: [{
-                name:'时延',
-                data: nums
+                name:'cnt_400',
+                data: nums11
+            },{
+                name:'cnt_500',
+                data: nums12
+            },{
+                name:'cnt_total',
+                data: nums13
             }]
         });
     }, 1500);
 
-    //初始化Echarts
-    var myChart = echarts.init(document.getElementById('main'));
-    // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
-    //使图片自适应页面
-    window.addEventListener("resize", function() {
-        myChart.resize();
-      });}, 2000);
 
+    // 使用刚指定的配置项和数据显示图表。
+    myChart1.setOption(option1);

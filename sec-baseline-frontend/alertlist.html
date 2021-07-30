@@ -1,0 +1,224 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+<script type="text/javascript">
+        var currentPage = 1;
+        var totalPage = 0;
+        getHistoryPage();
+        function frist()
+		{
+		 	currentPage = 1;
+          var choose = $("#choose").val();
+          if(choose === 0)
+            getHistoryPage();
+          else
+            getHistoryPageByType(choose);
+		}
+        
+        
+		function back()
+		{
+		    if(currentPage<2){
+		 	   alert("当前已经是第一页");
+		 	   return;
+		    }else{
+		 	   currentPage--;
+		    }
+
+          var choose = $("#choose").val();
+          if(choose === 0)
+            getHistoryPage();
+          else
+            getHistoryPageByType(choose);
+		}
+
+		function next()
+		{
+		    if(currentPage === totalPage){
+		 	   alert("当前已经是最后一页");
+		 	   return;
+		    }else{
+              currentPage++;
+		    }
+            var choose = $("#choose").val();
+            if(choose === 0)
+		      getHistoryPage();
+            else
+              getHistoryPageByType(choose);
+		}
+        
+        function last()
+		{
+          currentPage = totalPage;
+          var choose = $("#choose").val();
+          if(choose === 0)
+            getHistoryPage();
+          else
+            getHistoryPageByType(choose);
+		}
+		
+		function changesearch()
+		{
+            var choose = $("#choose").val();
+            currentPage = 1;
+            if(choose > 0) {
+              getPageByType(choose);
+
+            } else {
+              getHistoryPage();
+            }
+		}
+
+		function getPageByType(choose) {
+          $(document).ready(
+                  $.ajax({url:"http://localhost:8080/getpagebytype?type=" + choose + "&&page=" + currentPage,
+                    type: 'get',
+                    contentType: 'application/json',
+                    success:function(data){
+                      showPageData(data.records, data.pages);
+                      totalPage = data.pages;
+                    },
+                    error:function (data) {
+                      alert(data);
+                    }
+                  })
+          )
+        }
+
+        function getHistoryPage() {
+            $(document).ready(
+                $.ajax({url:"http://localhost:8080/alerthistory?page=" + currentPage,
+                    type: 'get',
+                    contentType: 'application/json',
+                    success:function(data){
+                        showPageData(data.records, data.pages);
+                        totalPage = data.pages;
+                    },
+                    error:function (data) {
+                        alert(data);
+                    }
+                })
+        )
+        }
+
+        function getHistoryPageByType(type) {
+            $.ajax({url:"http://localhost:8080/getpagebytype?type=" + type + "&&page=" + currentPage,
+              type: 'get',
+              contentType: 'application/json',
+              success:function(data){
+                showPageData(data.records, data.pages);
+                totalPage = data.pages;
+              },
+              error:function (data) {
+                alert(data);
+              }
+            })
+        }
+
+        function showPageData(data, total) {
+            var content = "";
+            for(var i = 0; i < data.length; i++){
+                var info = data[i];
+                var num = (currentPage - 1)*10 + + i + 1;
+                var date = timestampToTime(info.ts);
+                var isDone = data.isDone === 1 ? "是" : "否";
+                var row = "<tr class='info'>\n" +
+                    "          <td>"+  num +"</td>\n" +
+                    "          <td>"+ info.alertType +"</td>\n" +
+                    "          <td>"+ info.alertTypeId +"</td>\n" +
+                    "          <td>"+ info.alertDesc +"</td>\n" +
+                    "          <td>"+ info.level +"</td>\n" +
+                    "          <td>"+ date +"</td>\n" +
+                        "          <td>" + isDone + "</td>" +
+                    "          <td>" +
+                        "<div class=\"button-group\"> \n" +
+                    // "          <a class=\"button border-main\" href=\"#\"><span class=\"icon-edit\"></span> 修改</a>\n" +
+                    "           <a id=\"isDone\" class=\"button border-red\" href=\"#\" >\n" +
+                    "           <span class=\"icon-trash-o\"></span>处理</a> " +
+                        "</div>" +
+                        "</td>\n" +
+                    "        </tr>"
+                content += row;
+            }
+            var preInfo = $("#alertTable .info");
+            if(preInfo !== undefined)
+              preInfo.remove();
+            $("#alertTable #theme").after(content);
+            $("#page").text("第" + currentPage + "页 共" + total + "页");
+        }
+
+        function timestampToTime(timestamp) {
+          var date = new Date(timestamp);
+          let Y = date.getFullYear() + '-';
+          let M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+          let D = change(date.getDate()) + ' ';
+          let h = change(date.getHours()) + ':';
+          let m = change(date.getMinutes()) + ':';
+          let s = change(date.getSeconds());
+          return Y + M + D + h + m + s;
+        }
+
+        function change(t) {
+          if (t < 10) {
+            return "0" + t;
+
+          } else {
+            return t;
+
+          }
+
+        }
+
+		</script>
+</head>
+<body>
+<form id="memberForm">
+  <div class="panel admin-panel">
+    <div class="panel-head"><strong class="icon-reorder"> 告警列表</strong> </div>
+    <div class="padding border-bottom">
+      <ul class="search" style="padding-left:10px;">
+        <li>类型：</li>
+            <select name="sex" id="choose" class="input w50">
+              <option value="0">--</option>
+              <option value="1">请求延时</option>
+              <option value="2">响应延时</option>
+              <option value="3">流量告警</option>
+              <option value="4">脚本告警</option>
+              <option value="5">请求异常</option>
+            </select>
+          <a href="javascript:void(0)" class="button border-main icon-search" onclick="changesearch()" > 搜索</a>
+      </ul>
+    </div>
+    <table id="alertTable" class="table table-hover text-center">
+      <tr id="theme">
+        <th>编号</th>
+        <th>告警类型</th>
+        <th>类型ID</th>
+        <th>告警内容</th>
+         <th>级别</th>
+           <th>时间</th>
+        <th>处理</th>
+        <th width="310">操作</th>
+      </tr>
+      <tr>
+        <td colspan=8><div class=pagelist>
+          <a href=# onclick=frist()>首页</a> <a id="back" href=# onclick=back()>上一页</a>
+          <b id="page"></b>
+          <a href=# onclick=next()>下一页</a><a href=# onclick=last()>尾页</a>
+        </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</form>
+</body>
+</html>

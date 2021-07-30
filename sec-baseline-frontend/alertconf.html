@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html lang="zh-cn">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="renderer" content="webkit">
+<title></title>
+<link rel="stylesheet" href="css/pintuer.css">
+<link rel="stylesheet" href="css/admin.css">
+<script src="js/jquery.js"></script>
+<script src="js/pintuer.js"></script>
+<script>
+  var submitButton= $("#submitmodify");
+  listConf();
+
+  function listConf() {
+    $(document).ready(
+            $.ajax({url:"http://localhost:8080/listproperties",
+              type: 'get',
+              contentType: 'application/json',
+              success:function(data){
+                // console.log(data)
+                showConfData(data)
+              },
+              error:function (data) {
+                alert(data);
+              }
+            })
+    )
+  }
+
+  function showConfData(data) {
+      var content = "";
+      for(var key in data) {
+        var row = "<div class=\"form-group\">\n" +
+                "        <div class=\"label\">\n" +
+                "          <label>" + key+"</label>\n" +
+                "        </div>\n" +
+                "        <div class=\"field\">\n" +
+                "          <input type=\"text\" class=\"input w50\" readonly=\"readonly\" value=\"" +
+                data[key] +
+                "\" name=\"stuno\" id=\"stuno\" />\n" +
+                "          <div class=\"tips\"></div>\n" +
+                "<div class=\"button-group\"> \n" +
+                "          <a class=\"button border-main\" href=\"#\"><span class=\"icon-edit\"></span> 修改</a>\n" +
+                "</div>" +
+                "        </div>\n" +
+                "      </div>";
+        content += row;
+      }
+      $("#conflist").prepend(content);
+  }
+
+  function submitModify() {
+      alert("修改");
+  }
+</script>
+</head>
+<body>
+<div class="panel admin-panel">
+  <div class="panel-head" id="add"><strong><span class="icon-pencil-square-o"></span>告警配置</strong></div>
+  <div class="body-content">
+    <form id="conflist" class="form-x">
+
+
+    
+      <div class="form-group">
+        <div class="label">
+          <label></label>
+        </div>
+        <div class="field">
+          <button id="submitmodify" class="button bg-main icon-check-square-o" type="submit" onclick="submitModify()"> 提交</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body></html>

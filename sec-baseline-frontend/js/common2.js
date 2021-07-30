@@ -1,34 +1,9 @@
-// setTimeout(() => {
-//     var chartDom = document.getElementById('main');
-//     var myChart = echarts.init(chartDom);
-//     var option;
-//
-//     option = {
-//         color:["pink"],
-//         xAxis: {
-//             type: 'category',
-//             data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-//         },
-//         yAxis: {
-//             type: 'value'
-//         },
-//         series: [{
-//             data: [150, 230, 224, 218, 135, 147, 260],
-//             type: 'line'
-//         }]
-//     };
-//
-//     option && myChart.setOption(option);
-//  //使图片自适应页面
-//  window.addEventListener("resize", function() {
-//     myChart.resize();
-//   });}, 2000);
-
-
-setTimeout(() => {
-    var productName = [];
-    var nums = [];
-    var id = 31;
+     //初始化Echarts
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var productName2 = []; 
+    var nums21 = [];  //脚本
+    var nums22 = [];  //用户
+    var id2 = 1;
 
     //时间戳转换为时间函数
     function formateDate(time){
@@ -38,99 +13,141 @@ setTimeout(() => {
         return  hour+":"+minute+":"+second;
     }
 
-
-
-    //AJAX接收数据主体
-    $.ajax({
-        type:"GET",
-        url:"http://localhost:8080/initres",
-        data:{},
-        dataType:"json",
-        async:true,
-        success:function (result) {
-
-            for (var i = 0; i < result.length; i++){
-                var SQLTime = result[i].ts;
-                var time = new Date(SQLTime);
-                productName.push(formateDate(time));
-                nums.push(result[i].avgResTime);
-            }
-
-        },
-        error :function(errorMsg) {
-            alert("获取后台数据失败！");
-        }
-    });
-
-    // 指定图表的配置项和数据
-    var option = {
-        color:["pink"],
+    var option2 = {
+        color:["red","#3398DB"],
         title: {
-            text: '平均响应时延'
+            text: '脚本量和用户量',
+            left: '10%',
+            top: '5%',
+            textStyle: {
+                fontSize: 20,
+                fontStyle: "italic",
+                color:'#3398DB'
+              }
         },
-        tooltip: {},
+        toolbox: {
+            feature: {
+                dataView: {show: true, readOnly: false},
+                saveAsImage: {show: true}
+            },
+            right:"4%"
+            
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
         legend: {
-            data:['时延']
+            data: ['脚本量', '用户量'],
+            right: '10%', // 距离右边10%
+            top: '5%'
         },
         grid:{
+            top: '20%',
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
             containLabel:true
         },
-        xAxis: {
-            //结合
-            data: productName
-        },
-
-        yAxis: {},
-        series: [{
-            name: '时延',
-            type: 'line',
-            //结合
-            data: nums
-        }]
+       
+        calculable: true,
+        xAxis: [
+            {
+                type: 'category',
+                axisTick: {
+                    show: false // 去除刻度线
+                  },
+                  axisLabel: {
+                    color: '#4c9bfd' // 文本颜色
+                  },
+                  axisLine: {
+                    show: true // 去除轴线
+                  },
+                  boundaryGap: true,
+                data: productName2,
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                axisTick: {
+                    show: false  // 去除刻度
+                  },
+                  axisLabel: {
+                    color: '#4c9bfd' // 文字颜色
+                  }
+            }
+        ],
+        series: [
+            {
+                name: '脚本量',
+                type: 'bar',
+                data: nums21,
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+            },
+            {
+                name: '用户量',
+                type: 'bar',
+                data: nums22,
+                markPoint: {
+                    data: [
+                        {type: 'max', name: '最大值'},
+                        {type: 'min', name: '最小值'}
+                    ]
+                },
+            }
+        ]
     };
-
     function addData2(shift) {
         $.ajax({
-            type:"GET",
-            url:"http://localhost:8080/resgetinfo",
-            data:{id:id.toString()},
+            type:"POST",
+            url:"http://localhost:8080/usergetinfo",
+            data:{id:id2.toString()},
             dataType:"json",
             async:true,
             success:function (json) {
                 var newSQLTime = json.ts;
                 var newTime = new Date(newSQLTime);
-                productName.push(formateDate(newTime));
-                nums.push(json.avgResTime);
-                id++;
+                productName2.push(formateDate(newTime));
+                nums21.push(json.robotNum);
+                nums22.push(json.totalNum);
+                id2++;
             },
             error :function(errorMsg) {
                 alert("获取后台数据失败！");
             }
         });
-        if (shift) {
-            productName.shift();
-            nums.shift();
+        if (nums21.length >= 20) {
+            productName2.shift();
+            nums21.shift();
+            nums22.shift();
         }
     }
 
     setInterval(function () {
         addData2(true);
-        myChart.setOption({
+        myChart2.setOption({
             xAxis: {
-                data: productName
+                data: productName2
             },
             series: [{
-                name:'时延',
-                data: nums
+                name:'脚本量',
+                data: nums21
+            },{
+                name:'用户量',
+                data: nums22
             }]
         });
     }, 1500);
 
-    //初始化Echarts
-    var myChart = echarts.init(document.getElementById('main'));
+   
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myChart2.setOption(option2);
     //使图片自适应页面
     window.addEventListener("resize", function() {
-        myChart.resize();
-    });}, 2000);
+        myChart2.resize();
+    });

@@ -1,33 +1,8 @@
-// setTimeout(() => {
-//     var chartDom = document.getElementById('main');
-//     var myChart = echarts.init(chartDom);
-//     var option;
-//
-//     option = {
-//     xAxis: {
-//         type: 'category',
-//         data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-//     },
-//     yAxis: {
-//         type: 'value'
-//     },
-//     series: [{
-//         data: [820, 932, 901, 934, 1290, 1330, 1320],
-//         type: 'line',
-//         smooth: true
-//     }]
-// };
-//
-//     option && myChart.setOption(option);
-//  //使图片自适应页面
-//  window.addEventListener("resize", function() {
-//     myChart.resize();
-//   });}, 2000);
-
-setTimeout(() => {
-    var productName = [];
-    var nums = [];
-    var id = 31;
+    //初始化Echarts
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    var productName3 = [];
+    var nums3 = [];
+    var id3 = 1;
 
     //时间戳转换为时间函数
     function formateDate(time){
@@ -40,96 +15,140 @@ setTimeout(() => {
 
 
     //AJAX接收数据主体
-    $.ajax({
-        type:"GET",
-        url:"http://localhost:8080/initsen",
-        data:{},
-        dataType:"json",
-        async:true,
-        success:function (result) {
+    // $.ajax({
+    //     type:"GET",
+    //     url:"http://localhost:8080/initsen",
+    //     data:{},
+    //     dataType:"json",
+    //     async:true,
+    //     success:function (result) {
 
-            for (var i = 0; i < result.length; i++){
-                var SQLTime = result[i].ts;
-                var time = new Date(SQLTime);
-                productName.push(formateDate(time));
-                nums.push(result[i].avgSendSize);
-            }
+    //         for (var i = 0; i < result.length; i++){
+    //             var SQLTime = result[i].ts;
+    //             var time = new Date(SQLTime);
+    //             productName3.push(formateDate(time));
+    //             nums3.push(result[i].avgSendSize);
+    //         }
 
-        },
-        error :function(errorMsg) {
-            alert("获取后台数据失败！");
-        }
-    });
+    //     },
+    //     error :function(errorMsg) {
+    //         alert("获取后台数据失败！");
+    //     }
+    // });
 
     // 指定图表的配置项和数据
-    var option = {
-        color:["pink"],
+    var option3 = {
+        color:["#3398DB"],
         title: {
-            text: '平均发送大小'
+            text: '平均发送大小',
+            left: '10%',
+            top: '5%',
+            textStyle: {
+                fontSize: 20,
+                fontStyle: "italic",
+                color:'#3398DB'
+              }
+        },
+        toolbox: {
+            feature: {
+                dataView: {show: true, readOnly: false},
+                saveAsImage: {show: true}
+            },
+            right:"4%"
+            
         },
         tooltip: {},
         legend: {
-            data:['流量']
+            data:['流量'],
+            right: '10%', // 距离右边10%
+            top: '5%'
         },
         grid:{
+            top: '20%',
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
             containLabel:true
         },
         xAxis: {
             //结合
-            data: productName
+            data: productName3,
+            axisTick: {
+                show: false // 去除刻度线
+              },
+              axisLabel: {
+                color: '#4c9bfd' // 文本颜色
+              },
+              axisLine: {
+                show: true // 去除轴线
+              },
+              boundaryGap: false
+           
         },
 
-        yAxis: {},
+        yAxis: {
+            axisTick: {
+                show: false  // 去除刻度
+              },
+              axisLabel: {
+                color: '#4c9bfd' // 文字颜色
+              }
+        },
         series: [{
             name: '流量',
             type: 'line',
             //结合
-            data: nums
+            data: nums3,
+            markPoint: {
+                data: [
+                    {type: 'max', name: '最大值'},
+                    {type: 'min', name: '最小值'}
+                ]
+            }
         }]
     };
 
     function addData3(shift) {
         $.ajax({
-            type:"GET",
+            type:"POST",
             url:"http://localhost:8080/sengetinfo",
-            data:{id:id.toString()},
+            data:{id:id3.toString()},
             dataType:"json",
             async:true,
             success:function (json) {
                 var newSQLTime = json.ts;
                 var newTime = new Date(newSQLTime);
-                productName.push(formateDate(newTime));
-                nums.push(json.avgSendSize);
-                id++;
+                productName3.push(formateDate(newTime));
+                nums3.push(json.avgSendSize);
+                id3++;
             },
             error :function(errorMsg) {
                 alert("获取后台数据失败！");
             }
         });
-        if (shift) {
-            productName.shift();
-            nums.shift();
+        if (nums3.length >= 30) {
+            productName3.shift();
+            nums3.shift();
         }
     }
 
     setInterval(function () {
         addData3(true);
-        myChart.setOption({
+        myChart3.setOption({
             xAxis: {
-                data: productName
+                data: productName3
             },
             series: [{
                 name:'流量',
-                data: nums
+                data: nums3
             }]
         });
     }, 1500);
 
-    //初始化Echarts
-    var myChart = echarts.init(document.getElementById('main'));
+    
     // 使用刚指定的配置项和数据显示图表。
-    myChart.setOption(option);
+    myChart3.setOption(option3);
     //使图片自适应页面
     window.addEventListener("resize", function() {
-        myChart.resize();
-    });}, 2000);
+        myChart3.resize();
+    });

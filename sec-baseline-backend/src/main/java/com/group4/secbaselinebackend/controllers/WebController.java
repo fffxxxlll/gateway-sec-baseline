@@ -110,7 +110,7 @@ public class WebController {
     }
 
     @ResponseBody
-    @RequestMapping("/getagentinfo")
+    @RequestMapping("/usergetinfo")
     public CntUserAgent getAgentInfo(@RequestParam("id") String id){
         int temp = Integer.parseInt(id);
         return cntUserAgentService.selectOne(temp);

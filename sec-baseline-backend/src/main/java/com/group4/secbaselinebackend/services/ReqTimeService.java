@@ -23,6 +23,9 @@ public class ReqTimeService {
     @Autowired
     AlertInfoService alertInfoService;
 
+    @Autowired
+    WeChatServerImpl weChatServer;
+
     public AvgRequestTime selectOne(Integer id) {
         AvgRequestTime avgRequestTime = reqTimeMapper.selectById(id);
         doAlert(avgRequestTime);
@@ -34,7 +37,9 @@ public class ReqTimeService {
     public void doAlert(AvgRequestTime avgRequestTime) {
         Integer flag = this.judgeAlert(avgRequestTime);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag, avgRequestTime));
+            AlertInfo alertInfo = createAlertInfo(flag, avgRequestTime);
+            alertInfoService.insertAlert(alertInfo);
+//            weChatServer.sendTemplateMessage(alertInfo);
         }
     }
 

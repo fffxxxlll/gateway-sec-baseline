@@ -26,6 +26,9 @@ public class CntHttpCodeService {
     @Autowired
     AlertInfoService alertInfoService;
 
+    @Autowired
+    WeChatServerImpl weChatServer;
+
     public CntHttpCode selectOne(Integer id) {
         CntHttpCode cntHttpCode = cntHttpCodeMapper.selectById(id);
         doAlert(cntHttpCode);
@@ -35,7 +38,9 @@ public class CntHttpCodeService {
     public void doAlert(CntHttpCode cntHttpCode) {
         Integer flag = this.judgeAlert(cntHttpCode);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag, cntHttpCode));
+            AlertInfo alertInfo = createAlertInfo(flag, cntHttpCode);
+            alertInfoService.insertAlert(alertInfo);
+//            weChatServer.sendTemplateMessage(alertInfo);
         }
     }
 
@@ -43,9 +48,10 @@ public class CntHttpCodeService {
         Integer avgCnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.cnt404"));
         Integer  top20Cnt404 = Integer.parseInt((String) PropertiesUtil.getValueByKey("top20.cnt404"));
         Integer avgCnt500 = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.cnt500"));
+        Integer top10Cnt500 = Integer.parseInt((String) PropertiesUtil.getValueByKey("top10.cnt500"));
         Integer  aAvgCnt404 = Integer.parseInt(cntHttpCode.getCnt400() + "");
         Integer  aAvgCnt500 = Integer.parseInt(cntHttpCode.getCnt500() + "");
-        if(aAvgCnt500 > avgCnt500){
+        if(aAvgCnt500 > avgCnt500 * 2){
             this.alert500Cnt++;
         } else{
             this.alert500Cnt = 0;
@@ -55,9 +61,11 @@ public class CntHttpCodeService {
         } else{
             this.alert404Cnt = 0;
         }
-        if(alert500Cnt >= 4)
+        if(aAvgCnt500 > top10Cnt500)
             return 4;
-        if(aAvgCnt404 > top20Cnt404 && this.alert404Cnt >= 15)
+        if(alert500Cnt >= 10)
+            return 4;
+        if(aAvgCnt404 > top20Cnt404 && this.alert404Cnt >= 18)
             return 3;
         if(aAvgCnt404 > top20Cnt404)
             return 2;

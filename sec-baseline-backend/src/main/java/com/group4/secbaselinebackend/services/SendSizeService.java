@@ -22,6 +22,10 @@ public class SendSizeService {
 
     @Autowired
     AlertInfoService alertInfoService;
+
+    @Autowired
+    WeChatServerImpl weChatServer;
+
 //    public void selectAll() {
 //        List<AvgSendSize> avgSendSizes = sendSizeMapper.selectList(null);
 //        avgSendSizes.forEach(System.out::println);
@@ -37,7 +41,9 @@ public class SendSizeService {
     public void doAlert(AvgSendSize avgSendSize) {
         Integer flag = this.judgeAlert(avgSendSize);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag, avgSendSize));
+            AlertInfo alertInfo = createAlertInfo(flag, avgSendSize);
+            alertInfoService.insertAlert(alertInfo);
+//            weChatServer.sendTemplateMessage(alertInfo);
         }
     }
 

@@ -27,6 +27,10 @@ public class CntUserAgentService {
     @Autowired
     AlertInfoService alertInfoService;
 
+    @Autowired
+    WeChatServerImpl weChatServer;
+
+
     public CntUserAgent selectOne(Integer id) {
         CntUserAgent cntUserAgent = cntUserAgentMapper.selectById(id);
         doAlert(cntUserAgent);
@@ -36,7 +40,9 @@ public class CntUserAgentService {
     public void doAlert(CntUserAgent cntUserAgent) {
         Integer flag = this.judgeAlert(cntUserAgent);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag, cntUserAgent));
+            AlertInfo alertInfo = createAlertInfo(flag, cntUserAgent);
+            alertInfoService.insertAlert(alertInfo);
+//            weChatServer.sendTemplateMessage(alertInfo);
         }
     }
 
@@ -45,7 +51,7 @@ public class CntUserAgentService {
         Integer top20RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("top20.robotnum.ps"));
         Integer avgTop20RobotNum = Integer.parseInt((String) PropertiesUtil.getValueByKey("avg.top20.robotnum.ps"));
         Integer avgRobotNum1 = Integer.parseInt(cntUserAgent.getRobotNum() + "");
-        if(avgRobotNum1 > avgRobotNum){
+        if(avgRobotNum1 > avgRobotNum * 2){
             this.alertCnt++;
         } else{
             this.alertCnt = 0;
@@ -53,11 +59,11 @@ public class CntUserAgentService {
 
         if(avgRobotNum1 > avgTop20RobotNum)
             return 3;
-        if(avgRobotNum1 > top20RobotNum && this.alertCnt >= 10)
+        if(avgRobotNum1 > top20RobotNum && this.alertCnt >= 30)
             return 3;
         if(avgRobotNum1 > top20RobotNum)
             return 2;
-        if(this.alertCnt >= 10)
+        if(this.alertCnt >= 20)
             return 1;
         return 0;
     }

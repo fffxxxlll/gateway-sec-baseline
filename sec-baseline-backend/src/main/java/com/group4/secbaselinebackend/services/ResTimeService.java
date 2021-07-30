@@ -20,6 +20,9 @@ public class ResTimeService {
     @Autowired
     private AlertInfoService alertInfoService;
 
+    @Autowired
+    WeChatServerImpl weChatServer;
+
     private Integer alertCnt = 0;
 
     public AvgResponseTime selectOne(Integer id) {
@@ -31,7 +34,9 @@ public class ResTimeService {
     public void doAlert(AvgResponseTime avgResponseTime) {
         Integer flag = this.judgeAlert(avgResponseTime);
         if(flag > 0){
-            alertInfoService.insertAlert(createAlertInfo(flag, avgResponseTime));
+            AlertInfo alertInfo = createAlertInfo(flag, avgResponseTime);
+            alertInfoService.insertAlert(alertInfo);
+//            weChatServer.sendTemplateMessage(alertInfo);
         }
     }
 

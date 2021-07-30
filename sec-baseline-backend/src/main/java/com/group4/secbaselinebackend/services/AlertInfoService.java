@@ -35,6 +35,18 @@ public class AlertInfoService {
         return selectPage;
     }
 
+    public Page<AlertInfo> getPageByType(Integer type, Integer pageNum) {
+        Page<AlertInfo> page = new Page<>(pageNum, 10);
+        QueryWrapper<AlertInfo> queryWrapper = new QueryWrapper<>();
+        return alertInfoMapper.selectPage(page, queryWrapper.lambda().eq(AlertInfo::getAlertTypeId, type));
+    }
+
+
+//    public Integer handleAlertById(Integer id) {
+//        alertInfoMapper.
+//        return 1;
+//    }
+
     public Integer modifyConfig(String key, String value) {
         Integer res = PropertiesUtil.setValueOfKey(key, value);
         return res;

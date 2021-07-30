@@ -27,14 +27,13 @@ public class AlertInfo {
 
     public String wrapInfo() {
         String wrap =
-                      "\n风险类型 : " + alertType +
-                      "\n风险详情 : " + alertDesc +
-                      "\n风险级别 : " + level +
-                      "\n时间     : " + toDateString(ts);
+                      "风险类型 : " + alertType + ";" +
+                      "风险详情 : " + alertDesc + ";" +
+                      "风险级别 : " + level;
         return wrap;
     }
 
-    private String toDateString(BigInteger ts) {
+    public String toDateString(BigInteger ts) {
         Date date = new Date(Long.parseLong(ts+""));
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return format.format(date);

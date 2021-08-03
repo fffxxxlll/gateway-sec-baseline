@@ -46,10 +46,29 @@ public class CreateTable {
             "upstream_response_time    float," +
             "url   string," +
             "workgroup_id   bigint," +
-            "workgroup_name   string"+
+            "workgroup_name   string,"+
+            "ts AS TO_TIMESTAMP(FROM_UNIXTIME(agent_timestamp / 1000, 'yyyy-MM-dd HH:mm:ss'))," +
+            "WATERMARK FOR ts AS ts - INTERVAL '5' SECOND"+
             ") WITH (" +
             " 'connector' = 'filesystem'," +
-            " 'path' = 'D:\\download\\unlayer_20210601'," +
+            " 'path' = 'D:\\download\\unlayer_20210601\\part-00630-1cd0b8fb-f3ce-48c4-b375-b97121c4f2a8.c000'," +
+            " 'format' = 'orc'" +
+            ")";
+
+
+    public static String rawLogSinkToKafkaDDL = "CREATE TABLE sink_to_kafka (" +
+            "agent_timestamp BIGINT," +
+            "http_code        BIGINT," +
+            "upstream_response_time FLOAT," +
+            "recv_size   BIGINT," +
+            "request_time    FLOAT," +
+            "PRIMARY KEY (ts) NOT ENFORCED" +
+            ") WITH (" +
+            " 'connector' = 'kafka'," +
+            " 'topic' = 'raw_log'," +
+            " 'properties.bootstrap.servers' = 'hadoop01:9092'," +
+            " 'properties.group.id' = 'testGroup'," +
+            " 'scan.startup.mode' = 'earliest-offset'," +
             " 'format' = 'orc'" +
             ")";
 

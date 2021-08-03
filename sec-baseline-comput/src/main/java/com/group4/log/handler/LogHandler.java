@@ -43,8 +43,9 @@ public class LogHandler {
                 "END\n" +
                 ") AS code_500,\n" +
                 "COUNT(*) AS total,\n" +
-                "LAST_VALUE(agent_timestamp) AS ts\n" +
-                "FROM fs_log_source";
+                "TUMBLE_END(ts, INTERVAL '15' SECOND) as ts\n" +
+                "FROM fs_log_source\n" +
+                "GROUP BY TUMBLE(ts, INTERVAL '15' SECOND)";
         env.executeSql(CreateTable.countHttpCodeSinkMysqlDDL);
         env.executeSql(selectSql2).print();
     }
@@ -52,8 +53,9 @@ public class LogHandler {
     public void getAvgReqTime(){
         String selectSql1 =
                 "INSERT INTO avg_req_table (avg_res_time, ts)\n"+
-                "SELECT avg(request_time) AS avg_req_time, LAST_VALUE(agent_timestamp) AS ts\n" +
-                "FROM fs_log_source";
+                "SELECT avg(request_time) AS avg_req_time, TUMBLE_END(ts, INTERVAL '15' SECOND) as ts\n" +
+                "FROM fs_log_source\n" +
+                "GROUP BY TUMBLE(ts, INTERVAL '15' SECOND)";
         env.executeSql(CreateTable.avgReqTimeSinkMysqlDDL);
         env.executeSql(selectSql1).print();
     }
@@ -61,8 +63,9 @@ public class LogHandler {
     public void getAvgResponseTime(){
         String selectSql1 =
                 "INSERT INTO avg_res_table (avg_res_time, ts)\n"+
-                "SELECT avg(upstream_response_time) AS avg_response_time, LAST_VALUE(agent_timestamp) AS ts\n" +
-                "FROM fs_log_source";
+                "SELECT avg(upstream_response_time) AS avg_response_time, TUMBLE_END(ts, INTERVAL '15' SECOND) as ts\n" +
+                "FROM fs_log_source\n" +
+                "GROUP BY TUMBLE(ts, INTERVAL '15' SECOND)";
         env.executeSql(CreateTable.avgResTimeSinkMysqlDDL);
         env.executeSql(selectSql1).print();
     }
@@ -77,9 +80,10 @@ public class LogHandler {
                 "SELECT send_size,\n" +
                 "ROW_NUMBER() OVER (\n" +
                 "ORDER BY send_size DESC) AS row_num, \n" +
-                "agent_timestamp\n" +
+                "TUMBLE_END(ts, INTERVAL '15' SECOND) as ts\n" +
                 "FROM fs_log_source)\n" +
-                "WHERE row_num = 1000";
+                "WHERE row_num = 1000\n" +
+                "GROUP BY TUMBLE(ts, INTERVAL '15' SECOND)";
         env.executeSql(CreateTable.avgSendSizeSinkMysqlDDL);
         env.executeSql(selectSql2).print();
 
@@ -105,8 +109,9 @@ public class LogHandler {
                 "SELECT COUNT(\n" +
                 "CASE WHEN http_user_agent IS NULL\n" +
                 "OR REGEXP(LOWER(http_user_agent), '.*(java|prometheus|okhttp|stargate).*')\n" +
-                "THEN 1 ELSE NULL END ) AS robot_num, COUNT(*) AS total, LAST_VALUE(agent_timestamp) as ts\n" +
-                "FROM fs_log_source\n";
+                "THEN 1 ELSE NULL END ) AS robot_num, COUNT(*) AS total, TUMBLE_END(ts, INTERVAL '15' SECOND) as ts\n" +
+                "FROM fs_log_source\n " +
+                "GROUP BY TUMBLE(ts, INTERVAL '15' SECOND)";
         env.executeSql(CreateTable.countRobotNumSinkMysqlDDL);
         env.executeSql(cntRobotNumSinkToMysql);
     }

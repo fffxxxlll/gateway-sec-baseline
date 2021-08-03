@@ -20,6 +20,7 @@ public class InitStreamTabEnv {
                 .inStreamingMode()
                 .build();
         StreamExecutionEnvironment streamEnv = StreamExecutionEnvironment.getExecutionEnvironment();
+        streamEnv.setParallelism(1);
         StreamTableEnvironment streamTableEnv = StreamTableEnvironment.create(streamEnv, settings);
         streamTableEnv.executeSql(CreateTable.logSourceDDL);
         streamTableEnvironment = streamTableEnv;
